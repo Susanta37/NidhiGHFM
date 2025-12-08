@@ -31,6 +31,7 @@ import {
     LayoutGrid,
     Settings,
     ShieldCheck,
+    User2Icon,
     Wallet,
 } from 'lucide-react';
 
@@ -129,9 +130,8 @@ function SidebarItemComponent({ item }: { item: NavItem }) {
                 <SidebarMenuItem>
                     <CollapsibleTrigger asChild>
                         <SidebarMenuButton
-                            className={`flex items-center w-full justify-between pr-2 ${
-                                isChildActive ? activeClass : ""
-                            }`}
+                            className={`flex items-center w-full justify-between pr-2 ${isChildActive ? activeClass : ""
+                                }`}
                         >
                             {/* ICON + TITLE */}
                             <div className="flex items-center gap-2 overflow-hidden">
@@ -254,7 +254,7 @@ function getNavItems(role: string): NavItem[] {
                 },
                 {
                     title: "Attendance",
-                    href: "#",  
+                    href: "#",
                     icon: Clock,
                     children: [
                         { title: "Daily Attendance", href: "/super-admin/attendance/daily" },
@@ -316,6 +316,50 @@ function getNavItems(role: string): NavItem[] {
                         { title: "Integrations", href: "#" },
                     ],
                 },
+            ];
+        case "hr":
+            return [
+                {
+                    title: "HR",
+                    href: "/hr/dashboard",
+                    icon: LayoutGrid,
+                },
+                {
+                    title: "User Management",
+                    href: "/hr/users",
+                    icon: User2Icon,
+                },
+                {
+                    title: "Face Recognition",
+                    href: "#",
+                    icon: Camera,
+                    children: [
+                        { title: "Face Records", href: "/hr/face/records" },
+                        { title: "Attendance Verification Logs", href: "/hr/face/logs" },
+                        { title: "Face Recognition Settings", href: "/hr/face/settings" },
+                    ],
+                },
+                {
+                    title: "Attendance",
+                    href: "#",
+                    icon: Clock,
+                    children: [
+                        { title: "Daily Attendance", href: "/hr/attendance/daily" },
+                        { title: "Manual Attendance Correction", href: "/hr/manual-attendance" },
+                        { title: "GPS Attendance Map", href: "#" },
+                        { title: "Selfie Attendance Viewer", href: "#" },
+                    ],
+                },
+                {
+                    title: "Leave & Compliance",
+                    href: "#",
+                    icon: ShieldCheck,
+                    children: [
+                        { title: "Leave Requests", href: "/hr/leaves" },
+                        { title: "Leave Types", href: "/hr/leave-types" },
+                        { title: "Compliance Certificates", href: "/hr/compliance" },
+                    ],
+                }
             ];
 
         default:

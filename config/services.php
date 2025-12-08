@@ -34,5 +34,9 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
+    
+    'python_microservice' => [
+        'url' => env('PYTHON_MICRO_SERVICE_URL', 'http://127.0.0.1:5005'),
+    ],
 
 ];
