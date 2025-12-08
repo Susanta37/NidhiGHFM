@@ -1,6 +1,6 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition } from './../../wayfinder'
 /**
- * @see routes/web.php:45
+ * @see routes/web.php:63
  * @route '/onboarding'
  */
 export const show = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -14,7 +14,7 @@ show.definition = {
 } satisfies RouteDefinition<["get","head"]>
 
 /**
- * @see routes/web.php:45
+ * @see routes/web.php:63
  * @route '/onboarding'
  */
 show.url = (options?: RouteQueryOptions) => {
@@ -22,7 +22,7 @@ show.url = (options?: RouteQueryOptions) => {
 }
 
 /**
- * @see routes/web.php:45
+ * @see routes/web.php:63
  * @route '/onboarding'
  */
 show.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -30,7 +30,7 @@ show.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     method: 'get',
 })
 /**
- * @see routes/web.php:45
+ * @see routes/web.php:63
  * @route '/onboarding'
  */
 show.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -39,7 +39,7 @@ show.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 })
 
     /**
- * @see routes/web.php:45
+ * @see routes/web.php:63
  * @route '/onboarding'
  */
     const showForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -48,7 +48,7 @@ show.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     })
 
             /**
- * @see routes/web.php:45
+ * @see routes/web.php:63
  * @route '/onboarding'
  */
         showForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -56,7 +56,7 @@ show.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
             method: 'get',
         })
             /**
- * @see routes/web.php:45
+ * @see routes/web.php:63
  * @route '/onboarding'
  */
         showForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({

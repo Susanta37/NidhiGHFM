@@ -54,9 +54,10 @@ export default function Records({ users }: Props) {
         const img = webcamRef.current.getScreenshot();
         if (!img) return;
 
-        await axios.post(`/super-admin/users/${selectedUser.id}/face-register`, {
-            image: img,
-        });
+       await axios.post(`/hr/users/${selectedUser.id}/face-register`, {
+    image: img,
+});
+
 
         setShowModal(false);
     };
