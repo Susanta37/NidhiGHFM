@@ -303,7 +303,10 @@ export default function Index({ auth, users, kpi }: Props) {
                 <TableHead>Email</TableHead>
                 <TableHead>Role</TableHead>
                 <TableHead>Joining Date</TableHead>
+                <TableHead>D.O.B</TableHead>
+                <TableHead>Blood Group</TableHead>
                 <TableHead>Actions</TableHead>
+                <TableHead>Address</TableHead>
               </TableRow>
             </TableHeader>
 
@@ -314,6 +317,9 @@ export default function Index({ auth, users, kpi }: Props) {
                   <TableCell className="px-4 py-3">{user.email}</TableCell>
                   <TableCell className="px-4 py-3 capitalize">{user.role}</TableCell>
                   <TableCell className="px-4 py-3">{user.profile?.joining_date ?? "—"}</TableCell>
+                  <TableCell className="px-4 py-3">{user.profile?.dob ?? "—"}</TableCell>
+                  <TableCell className="px-4 py-3">{user.profile?.blood_group ?? "—"}</TableCell>
+                  <TableCell className="px-4 py-3">{user.profile?.address ?? "—"}</TableCell>
                   <TableCell className="px-4 py-3">
                     <div className="flex items-center gap-2">
                       <button
