@@ -7,6 +7,9 @@ import KpiCard from '@/components/KpiCard';
 import Modal from '@/components/Modal';
 import { Users, Activity, Settings, User as UserIcon, Upload, Edit, Trash2, Search } from 'lucide-react';
 import DynamicFilterBar from "@/components/DynamicFilterBar";
+import DocumentsModal from "./DocumentsModal";
+import { router } from "@inertiajs/react";
+
 
 // shadcn table components (your file at /components/ui/table.tsx)
 import {
@@ -760,7 +763,7 @@ export default function Index({ auth, users, kpi }: Props) {
       {/* ===================================================================
          UPLOAD DOCUMENTS MODAL
       =================================================================== */}
-      <Modal show={showUploadDocs} onClose={() => setShowUploadDocs(false)}>
+      {/* <Modal show={showUploadDocs} onClose={() => setShowUploadDocs(false)}>
         <h2 className="text-xl font-semibold mb-4 text-neutral-900 dark:text-white">Upload Documents</h2>
 
         <form
@@ -819,7 +822,19 @@ export default function Index({ auth, users, kpi }: Props) {
             </button>
           </div>
         </form>
-      </Modal>
+      </Modal> */}
+
+      <DocumentsModal
+          show={showUploadDocs}
+          onClose={() => setShowUploadDocs(false)}
+          userId={selectedUser?.id}
+          existingDocs={selectedUser?.documents ?? []}
+          onSuccess={() => {
+              router.reload({ only: ["users"] });
+          }}
+      />
+
+
 
       {/* ===================================================================
          DELETE MODAL
