@@ -19,7 +19,7 @@ class UserManagementController extends Controller
      */
     public function index()
     {
-        $users = User::with(['profile'])
+        $users = User::with(['profile', 'documents'])
             ->where('role', '!=', 'superadmin')
             ->latest()
             ->get();
@@ -208,19 +208,17 @@ public function uploadDocuments(Request $request, User $user)
 {
     $validated = $request->validate([
         'documents' => 'required|array',
-        'documents.*.file' => 'required|file|max:2048',
-        'documents.*.doc_type' => 'required|string',
-        'documents.*.expiry_date' => 'nullable|date',
+        'documents.*' => 'file|max:2048'
     ]);
 
-    foreach ($validated['documents'] as $doc) {
+    foreach ($request->file('documents') as $file) {
 
-        $path = $doc['file']->store('user_documents', 'public');
+        $path = $file->store('user_documents', 'public');
 
         $user->documents()->create([
-            'doc_type' => $doc['doc_type'],
+            'doc_type' => 'general',   // default since frontend does not send it
             'file_path' => $path,
-            'expiry_date' => $doc['expiry_date'] ?? null,
+            'expiry_date' => null,
             'status' => 'pending',
             'verified_by' => null,
         ]);
@@ -228,6 +226,24 @@ public function uploadDocuments(Request $request, User $user)
 
     return back()->with('success', 'Documents uploaded successfully.');
 }
+
+public function verifyDocument(Request $request, User $user, UserDocument $doc)
+{
+    if ($doc->user_id !== $user->id) {
+        return back()->with('error', 'Invalid document.');
+    }
+
+    $action = $request->action;
+
+    $doc->update([
+        'status' => $action === 'approve' ? 'approved' : 'rejected',
+        'verified_by' => auth()->id(),
+    ]);
+
+    return back()->with('success', "Document {$action}d");
+}
+
+
 
 
 }
