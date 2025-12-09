@@ -7,6 +7,9 @@ import KpiCard from '@/components/KpiCard';
 import Modal from '@/components/Modal';
 import { Users, Activity, Settings, User as UserIcon, Upload, Edit, Trash2, Search } from 'lucide-react';
 import DynamicFilterBar from "@/components/DynamicFilterBar";
+import DocumentsModal from "./DocumentsModal";
+import { router } from "@inertiajs/react";
+
 
 // shadcn table components (your file at /components/ui/table.tsx)
 import {
@@ -303,7 +306,10 @@ export default function Index({ auth, users, kpi }: Props) {
                 <TableHead>Email</TableHead>
                 <TableHead>Role</TableHead>
                 <TableHead>Joining Date</TableHead>
+                <TableHead>D.O.B</TableHead>
+                <TableHead>Blood Group</TableHead>
                 <TableHead>Actions</TableHead>
+                <TableHead>Address</TableHead>
               </TableRow>
             </TableHeader>
 
@@ -314,6 +320,9 @@ export default function Index({ auth, users, kpi }: Props) {
                   <TableCell className="px-4 py-3">{user.email}</TableCell>
                   <TableCell className="px-4 py-3 capitalize">{user.role}</TableCell>
                   <TableCell className="px-4 py-3">{user.profile?.joining_date ?? "—"}</TableCell>
+                  <TableCell className="px-4 py-3">{user.profile?.dob ?? "—"}</TableCell>
+                  <TableCell className="px-4 py-3">{user.profile?.blood_group ?? "—"}</TableCell>
+                  <TableCell className="px-4 py-3">{user.profile?.address ?? "—"}</TableCell>
                   <TableCell className="px-4 py-3">
                     <div className="flex items-center gap-2">
                       <button
@@ -754,7 +763,7 @@ export default function Index({ auth, users, kpi }: Props) {
       {/* ===================================================================
          UPLOAD DOCUMENTS MODAL
       =================================================================== */}
-      <Modal show={showUploadDocs} onClose={() => setShowUploadDocs(false)}>
+      {/* <Modal show={showUploadDocs} onClose={() => setShowUploadDocs(false)}>
         <h2 className="text-xl font-semibold mb-4 text-neutral-900 dark:text-white">Upload Documents</h2>
 
         <form
@@ -813,7 +822,19 @@ export default function Index({ auth, users, kpi }: Props) {
             </button>
           </div>
         </form>
-      </Modal>
+      </Modal> */}
+
+      <DocumentsModal
+          show={showUploadDocs}
+          onClose={() => setShowUploadDocs(false)}
+          userId={selectedUser?.id}
+          existingDocs={selectedUser?.documents ?? []}
+          onSuccess={() => {
+              router.reload({ only: ["users"] });
+          }}
+      />
+
+
 
       {/* ===================================================================
          DELETE MODAL

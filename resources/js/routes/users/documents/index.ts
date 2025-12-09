@@ -78,8 +78,85 @@ upload.post = (args: { user: number | { id: number } } | [user: number | { id: n
         })
     
     upload.form = uploadForm
+/**
+* @see \App\Http\Controllers\SuperAdmin\UserManagementController::verify
+ * @see app/Http/Controllers/SuperAdmin/UserManagementController.php:230
+ * @route '/super-admin/users/{user}/documents/{doc}/verify'
+ */
+export const verify = (args: { user: number | { id: number }, doc: number | { id: number } } | [user: number | { id: number }, doc: number | { id: number } ], options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+    url: verify.url(args, options),
+    method: 'post',
+})
+
+verify.definition = {
+    methods: ["post"],
+    url: '/super-admin/users/{user}/documents/{doc}/verify',
+} satisfies RouteDefinition<["post"]>
+
+/**
+* @see \App\Http\Controllers\SuperAdmin\UserManagementController::verify
+ * @see app/Http/Controllers/SuperAdmin/UserManagementController.php:230
+ * @route '/super-admin/users/{user}/documents/{doc}/verify'
+ */
+verify.url = (args: { user: number | { id: number }, doc: number | { id: number } } | [user: number | { id: number }, doc: number | { id: number } ], options?: RouteQueryOptions) => {
+    if (Array.isArray(args)) {
+        args = {
+                    user: args[0],
+                    doc: args[1],
+                }
+    }
+
+    args = applyUrlDefaults(args)
+
+    const parsedArgs = {
+                        user: typeof args.user === 'object'
+                ? args.user.id
+                : args.user,
+                                doc: typeof args.doc === 'object'
+                ? args.doc.id
+                : args.doc,
+                }
+
+    return verify.definition.url
+            .replace('{user}', parsedArgs.user.toString())
+            .replace('{doc}', parsedArgs.doc.toString())
+            .replace(/\/+$/, '') + queryParams(options)
+}
+
+/**
+* @see \App\Http\Controllers\SuperAdmin\UserManagementController::verify
+ * @see app/Http/Controllers/SuperAdmin/UserManagementController.php:230
+ * @route '/super-admin/users/{user}/documents/{doc}/verify'
+ */
+verify.post = (args: { user: number | { id: number }, doc: number | { id: number } } | [user: number | { id: number }, doc: number | { id: number } ], options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+    url: verify.url(args, options),
+    method: 'post',
+})
+
+    /**
+* @see \App\Http\Controllers\SuperAdmin\UserManagementController::verify
+ * @see app/Http/Controllers/SuperAdmin/UserManagementController.php:230
+ * @route '/super-admin/users/{user}/documents/{doc}/verify'
+ */
+    const verifyForm = (args: { user: number | { id: number }, doc: number | { id: number } } | [user: number | { id: number }, doc: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        action: verify.url(args, options),
+        method: 'post',
+    })
+
+            /**
+* @see \App\Http\Controllers\SuperAdmin\UserManagementController::verify
+ * @see app/Http/Controllers/SuperAdmin/UserManagementController.php:230
+ * @route '/super-admin/users/{user}/documents/{doc}/verify'
+ */
+        verifyForm.post = (args: { user: number | { id: number }, doc: number | { id: number } } | [user: number | { id: number }, doc: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+            action: verify.url(args, options),
+            method: 'post',
+        })
+    
+    verify.form = verifyForm
 const documents = {
     upload: Object.assign(upload, upload),
+verify: Object.assign(verify, verify),
 }
 
 export default documents

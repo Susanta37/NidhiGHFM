@@ -88,9 +88,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Users
     Route::resource('super-admin/users', UserManagementController::class)->middleware('role:superadmin');
-    Route::post('super-admin/users/{user}/documents', [UserManagementController::class, 'uploadDocuments'])
-        ->middleware('role:superadmin')
-        ->name('users.documents.upload');
+    Route::post('super-admin/users/{user}/documents', [UserManagementController::class, 'uploadDocuments'])->middleware('role:superadmin')->name('users.documents.upload');
+    Route::post('/super-admin/users/{user}/documents/{doc}/verify', [UserManagementController::class, 'verifyDocument'])->name('users.documents.verify');
 
     // Face Recognition
     Route::get('/super-admin/face/records', [FaceRecognitionController::class, 'faceRecords'])
