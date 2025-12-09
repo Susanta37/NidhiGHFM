@@ -47,6 +47,9 @@ interface Props {
     distinctUsers: number;
   };
 }
+const breadcrumbs = [
+  { title: "Shift Assignments", href: "/super-admin/shift-assignments" },
+];
 
 export default function ShiftAssignmentsIndex({ assignments, shifts = [], users = [], filters, kpi }: Props) {
   const [showAssign, setShowAssign] = useState(false);
@@ -73,17 +76,26 @@ export default function ShiftAssignmentsIndex({ assignments, shifts = [], users 
   };
 
   return (
-    <AppLayout>
+    <AppLayout breadcrumbs={breadcrumbs} >
       <Head title="Shift Assignments" />
       <div className="p-6 min-h-screen bg-neutral-50 dark:bg-neutral-950">
-        <h1 className="text-2xl font-semibold mb-6 flex items-center gap-2">
-          <Calendar className="h-6 w-6" /> Shift Assignments
-        </h1>
 
         <div className="grid md:grid-cols-3 gap-6 mb-8">
-          <KpiCard title="Total Assignments" value={kpi.total} icon={Calendar} color="from-blue-500 to-sky-600" />
-          <KpiCard title="Today's Assignments" value={kpi.today} icon={Plus} color="from-green-500 to-emerald-600" />
-          <KpiCard title="Distinct Users" value={kpi.distinctUsers} icon={Edit3} color="from-purple-500 to-indigo-600" />
+          <KpiCard title="Total Assignments" value={kpi.total} icon={Calendar} bgColorClass="bg-blue-500/10 dark:bg-blue-900/20 border-blue-500/50"
+                // Icon: Solid blue
+                iconColorClass="text-blue-600 dark:text-blue-400"
+                // Hover: Smooth blue gradient
+                color="from-blue-500 to-sky-600" />
+          <KpiCard title="Today's Assignments" value={kpi.today} icon={Plus} bgColorClass="bg-green-500/10 dark:bg-green-900/20 border-green-500/50"
+                // Icon: Solid green
+                iconColorClass="text-green-600 dark:text-green-400"
+                // Hover: Smooth green gradient
+                color="from-green-500 to-emerald-600" />
+          <KpiCard title="Distinct Users" value={kpi.distinctUsers} icon={Edit3} bgColorClass="bg-purple-500/10 dark:bg-purple-900/20 border-purple-500/50"
+                // Icon: Solid purple
+                iconColorClass="text-purple-600 dark:text-purple-400"
+                // Hover: Smooth purple gradient
+                color="from-purple-500 to-indigo-600" />
         </div>
 
         <DynamicFilterBar
@@ -94,15 +106,20 @@ export default function ShiftAssignmentsIndex({ assignments, shifts = [], users 
           ]}
           values={filterValues}
           onChange={handleFilter}
-        />
-
-        <div className="flex justify-end mb-4">
-          <Button className="bg-blue-600 text-white" onClick={() => setShowAssign(true)}>
+          actionSlot={<>
+           <div className="flex gap-6 align-items:center justify-center">
+             <Button className="bg-blue-600 text-white" onClick={() => router.get("/super-admin/shift-assignments")}>
+              Reset Filters
+            </Button>
+            <Button className="bg-blue-600 text-white" onClick={() => setShowAssign(true)}>
             <Plus className="w-4 h-4 mr-1" /> Assign Shift
           </Button>
-        </div>
+           </div>
+            </>
+          }
+        />
 
-        <div className="bg-white dark:bg-neutral-900 p-6 rounded-xl border dark:border-neutral-800">
+        <div className="bg-white dark:bg-neutral-900 p-6 rounded-xl border mt-6 dark:border-neutral-800">
           <Table>
             <TableHeader>
               <TableRow>

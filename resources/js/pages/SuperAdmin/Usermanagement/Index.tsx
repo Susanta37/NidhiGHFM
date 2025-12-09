@@ -61,6 +61,8 @@ export default function Index({ auth, users, kpi }: Props) {
     search: "",
     role: "",
     joining_date: "",
+    blood_group: "",
+
   });
 
   const filterConfig = [
@@ -88,6 +90,15 @@ export default function Index({ auth, users, kpi }: Props) {
       key: "joining_date",
       label: "Joining Date",
       type: "date",
+    },
+    {
+      key: "blood_group",
+      label: "Blood Group",
+      type: "select",
+      options: [
+        { label: "All", value: "" },
+        ...bloodGroups.map((bg) => ({ label: bg, value: bg })),
+      ],
     },
   ];
 
@@ -187,8 +198,13 @@ export default function Index({ auth, users, kpi }: Props) {
         ? u.profile?.joining_date === filtersState.joining_date
         : true;
 
-      return matchSearch && matchRole && matchJoiningDate;
+      const matchBloodGroup = filtersState.blood_group
+        ? u.profile?.blood_group === filtersState.blood_group
+        : true;
+
+      return matchSearch && matchRole && matchJoiningDate && matchBloodGroup;
     });
+
   }, [users, filtersState]);
 
   /* --------------------------- PAGINATION --------------------------- */
@@ -245,56 +261,80 @@ export default function Index({ auth, users, kpi }: Props) {
       <div className="flex h-full flex-1 flex-col gap-6 p-4 md:p-6 bg-neutral-50 dark:bg-neutral-950">
 
         {/* ------------------- KPI CARDS ------------------- */}
-        <div className="grid gap-6 md:grid-cols-4">
-          <KpiCard
-            title="Total Users"
-            value={kpi.totalUsers.toString()}
-            change="+12.5%"
-            icon={Users}
-            color="from-purple-500 to-indigo-600"
-          />
+       <div className="grid gap-6 md:grid-cols-4">
+            {/* 1. Total Users: Theme - Primary Blue (High-level metric) */}
+            <KpiCard
+                title="Total Users"
+                value={kpi.totalUsers.toString()}
+                change="+12.5%"
+                icon={Users}
+                // Background: Light blue tint with a subtle border for white/dark contrast
+                bgColorClass="bg-blue-500/10 dark:bg-blue-900/20 border-blue-500/50"
+                // Icon: Solid blue
+                iconColorClass="text-blue-600 dark:text-blue-400"
+                // Hover: Smooth blue gradient
+                color="from-blue-500 to-sky-600"
+            />
 
-          <KpiCard
-            title="HR Employees"
-            value={kpi.hr.toString()}
-            change="+2%"
-            icon={Activity}
-            color="from-cyan-500 to-blue-600"
-          />
+            {/* 2. HR Employees: Theme - Teal/Cyan (Administrative/Support role) */}
+            <KpiCard
+                title="HR Employees"
+                value={kpi.hr.toString()}
+                change="+2%"
+                icon={Activity}
+                // Background: Light teal tint
+                bgColorClass="bg-teal-500/20 dark:bg-teal-900/20 border-teal-500/50"
+                // Icon: Solid teal
+                iconColorClass="text-teal-600 dark:text-teal-400"
+                // Hover: Teal/Cyan gradient
+                color="from-teal-500 to-cyan-600"
+            />
 
-          <KpiCard
-            title="Supervisors"
-            value={kpi.supervisor.toString()}
-            change="+1.2%"
-            icon={Settings}
-            color="from-emerald-500 to-green-600"
-          />
+            {/* 3. Supervisors: Theme - Green (Management/Growth) */}
+            <KpiCard
+                title="Supervisors"
+                value={kpi.supervisor.toString()}
+                change="+1.2%"
+                icon={Settings}
+                // Background: Light green tint
+                bgColorClass="bg-green-500/10 dark:bg-green-900/20 border-green-500/50"
+                // Icon: Solid green
+                iconColorClass="text-green-600 dark:text-green-400"
+                // Hover: Green gradient
+                color="from-green-500 to-emerald-600"
+            />
 
-          <KpiCard
-            title="Field Staff"
-            value={kpi.fieldstaff.toString()}
-            change="+4%"
-            icon={UserIcon}
-            color="from-orange-500 to-orange-600"
-          />
+            {/* 4. Field Staff: Theme - Amber/Orange (Operational/Field role) */}
+            <KpiCard
+                title="Field Staff"
+                value={kpi.fieldstaff.toString()}
+                change="+4%"
+                icon={UserIcon}
+                // Background: Light orange tint
+                bgColorClass="bg-amber-500/10 dark:bg-amber-900/20 border-amber-500/50"
+                // Icon: Solid orange
+                iconColorClass="text-amber-600 dark:text-amber-400"
+                // Hover: Orange/Amber gradient
+                color="from-amber-500 to-orange-600"
+            />
         </div>
 
         {/* ------------------- FILTER BAR ------------------- */}
-        <DynamicFilterBar
-          filters={filterConfig}
-          values={filtersState}
-          onChange={handleFilterChange}
+       <DynamicFilterBar
+        filters={filterConfig}
+        values={filtersState}
+        onChange={handleFilterChange}
+        primaryColor="indigo" 
+        actionSlot={
+            <button
+                onClick={() => setShowCreate(true)}
+                // Ensure button height matches the input field height (py-2.5)
+                className="bg-blue-600 text-white px-4 py-2.5 rounded-lg shadow-md hover:bg-blue-700 transition duration-150 w-full md:w-auto"
+            >
+                + Add User
+            </button>
+        }
         />
-
-        {/* Create User Button */}
-        <div className="flex justify-end -mt-4 mb-2">
-          <button
-            onClick={() => setShowCreate(true)}
-            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
-          >
-            + Add User
-          </button>
-        </div>
 
         {/* ------------------- TABLE ------------------- */}
         <div className="rounded-xl border dark:border-neutral-800 bg-white dark:bg-neutral-900 shadow-sm p-6">
@@ -369,9 +409,7 @@ export default function Index({ auth, users, kpi }: Props) {
               </strong>{" "}
               to{" "}
               <strong>
-                {Math.min(currentPage * rowsPerPage, totalItems)}
-              </strong>{" "}
-              of <strong>{totalItems}</strong> users
+                {Math.min(currentPage * rowsPerPage, totalItems)}</strong>{" "}of <strong>{totalItems}</strong>
             </div>
 
             {/* shadcn pagination component */}
@@ -569,260 +607,259 @@ export default function Index({ auth, users, kpi }: Props) {
       {/* ===================================================================
          EDIT MODAL (FULL USER + PROFILE)
       =================================================================== */}
-      <Modal show={showEdit} onClose={() => setShowEdit(false)}>
-        <h2 className="text-xl font-semibold mb-4 text-neutral-900 dark:text-white">Edit User</h2>
+     <Modal
+  show={showEdit}
+  onClose={() => setShowEdit(false)}
+  title="Edit User"
+>
+  <form
+    onSubmit={(e) => {
+      e.preventDefault();
+      if (selectedUser) {
+        // Assuming editForm is an inertiajs or similar form helper
+        editForm.put(`/super-admin/users/${selectedUser.id}`, {
+          onSuccess: () => setShowEdit(false),
+        });
+      }
+    }}
+    // Apply modern form grid layout with more explicit spacing
+    className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-[repeat(auto-fit,minmax(250px,1fr))]"
+  >
+    {/*
+      1. USER FIELDS
+      Applying a subtle grouping or just consistent, clean field styles.
+    */}
+    <div className="lg:col-span-full">
+      <h3 className="text-lg font-semibold text-blue-600 dark:text-blue-400 mb-3 border-b border-neutral-200 dark:border-neutral-700 pb-2">
+        User Credentials
+      </h3>
+    </div>
 
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            if (selectedUser) {
-              editForm.put(`/super-admin/users/${selectedUser.id}`, {
-                onSuccess: () => setShowEdit(false),
-              });
-            }
-          }}
-          className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-[repeat(auto-fit,minmax(220px,1fr))]"
-        >
-          {/* USER FIELDS */}
-          <div>
-            <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
-              Name <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="text"
-              className="border border-neutral-300 dark:border-neutral-600 dark:bg-neutral-800 dark:text-white px-3 py-2 rounded-lg w-full"
-              placeholder="Name"
-              value={editForm.data.name}
-              onChange={(e) => editForm.setData("name", e.target.value)}
-            />
-            {editForm.errors.name && (
-              <p className="text-red-500 text-sm mt-1">{editForm.errors.name}</p>
-            )}
-          </div>
+    {/* Name Field */}
+    <div>
+      <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
+        Name <span className="text-red-500">*</span>
+      </label>
+      <input
+        type="text"
+        // Modern, slightly softer input style
+        className="border border-neutral-300 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white px-4 py-2.5 rounded-lg w-full focus:ring-blue-500 focus:border-blue-500 transition duration-150 shadow-sm"
+        placeholder="Name"
+        value={editForm.data.name}
+        onChange={(e) => editForm.setData("name", e.target.value)}
+      />
+      {editForm.errors.name && (
+        <p className="text-red-500 text-sm mt-1">{editForm.errors.name}</p>
+      )}
+    </div>
 
-          <div>
-            <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
-              Email <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="email"
-              className="border border-neutral-300 dark:border-neutral-600 dark:bg-neutral-800 dark:text-white px-3 py-2 rounded-lg w-full"
-              placeholder="Email"
-              value={editForm.data.email}
-              onChange={(e) => editForm.setData("email", e.target.value)}
-            />
-            {editForm.errors.email && (
-              <p className="text-red-500 text-sm mt-1">{editForm.errors.email}</p>
-            )}
-          </div>
+    {/* Email Field */}
+    <div>
+      <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
+        Email <span className="text-red-500">*</span>
+      </label>
+      <input
+        type="email"
+        className="border border-neutral-300 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white px-4 py-2.5 rounded-lg w-full focus:ring-blue-500 focus:border-blue-500 transition duration-150 shadow-sm"
+        placeholder="Email"
+        value={editForm.data.email}
+        onChange={(e) => editForm.setData("email", e.target.value)}
+      />
+      {editForm.errors.email && (
+        <p className="text-red-500 text-sm mt-1">{editForm.errors.email}</p>
+      )}
+    </div>
 
-          <div>
-            <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
-              Role <span className="text-red-500">*</span>
-            </label>
-            <select
-              className="border border-neutral-300 dark:border-neutral-600 dark:bg-neutral-800 dark:text-white px-3 py-2 rounded-lg w-full"
-              value={editForm.data.role}
-              onChange={(e) => editForm.setData("role", e.target.value)}
-            >
-              <option value="hr">HR</option>
-              <option value="supervisor">Supervisor</option>
-              <option value="sitemanager">Site Manager</option>
-              <option value="accountant">Accountant</option>
-              <option value="fieldstaff">Field Staff</option>
-            </select>
-            {editForm.errors.role && (
-              <p className="text-red-500 text-sm mt-1">{editForm.errors.role}</p>
-            )}
-          </div>
+    {/* Role Field (Select) */}
+    <div>
+      <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
+        Role <span className="text-red-500">*</span>
+      </label>
+      <select
+        // Ensure select matches input height and style
+        className="border border-neutral-300 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white px-4 py-2.5 rounded-lg w-full focus:ring-blue-500 focus:border-blue-500 transition duration-150 shadow-sm"
+        value={editForm.data.role}
+        onChange={(e) => editForm.setData("role", e.target.value)}
+      >
+        <option value="hr">HR</option>
+        <option value="supervisor">Supervisor</option>
+        <option value="sitemanager">Site Manager</option>
+        <option value="accountant">Accountant</option>
+        <option value="fieldstaff">Field Staff</option>
+      </select>
+      {editForm.errors.role && (
+        <p className="text-red-500 text-sm mt-1">{editForm.errors.role}</p>
+      )}
+    </div>
 
-          {/* PROFILE FIELDS */}
-          <div>
-            <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
-              Address
-            </label>
-            <input type="text" placeholder="Address"
-              className="border border-neutral-300 dark:border-neutral-600 dark:bg-neutral-800 dark:text-white px-3 py-2 rounded-lg w-full"
-              value={editForm.data.address}
-              onChange={(e) => editForm.setData("address", e.target.value)}
-            />
-          </div>
+    {/*
+      2. PROFILE FIELDS
+      Using a divider/heading for visual separation.
+    */}
+    <div className="lg:col-span-full pt-4">
+      <h3 className="text-lg font-semibold text-blue-600 dark:text-blue-400 mb-3 border-b border-neutral-200 dark:border-neutral-700 pb-2">
+        Profile Details
+      </h3>
+    </div>
 
-          <div>
-            <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
-              Emergency Contact
-            </label>
-            <input type="text" placeholder="Emergency Contact"
-              className="border border-neutral-300 dark:border-neutral-600 dark:bg-neutral-800 dark:text-white px-3 py-2 rounded-lg w-full"
-              value={editForm.data.emergency_contact}
-              onChange={(e) => editForm.setData("emergency_contact", e.target.value)}
-            />
-          </div>
+    {/* Address Field */}
+    <div>
+      <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
+        Address
+      </label>
+      <input
+        type="text"
+        placeholder="Address"
+        className="border border-neutral-300 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white px-4 py-2.5 rounded-lg w-full focus:ring-blue-500 focus:border-blue-500 transition duration-150 shadow-sm"
+        value={editForm.data.address}
+        onChange={(e) => editForm.setData("address", e.target.value)}
+      />
+    </div>
 
-          <div>
-            <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
-              Date of Birth
-            </label>
-            <input type="date" placeholder="DOB"
-              className="border border-neutral-300 dark:border-neutral-600 dark:bg-neutral-800 dark:text-white px-3 py-2 rounded-lg w-full"
-              value={editForm.data.dob || ""}
-              onChange={(e) => editForm.setData("dob", e.target.value)}
-            />
-          </div>
+    {/* Emergency Contact Field */}
+    <div>
+      <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
+        Emergency Contact
+      </label>
+      <input
+        type="text"
+        placeholder="Emergency Contact"
+        className="border border-neutral-300 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white px-4 py-2.5 rounded-lg w-full focus:ring-blue-500 focus:border-blue-500 transition duration-150 shadow-sm"
+        value={editForm.data.emergency_contact}
+        onChange={(e) => editForm.setData("emergency_contact", e.target.value)}
+      />
+    </div>
 
-          <div>
-            <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
-              Bank Account No
-            </label>
-            <input type="text" placeholder="Bank Account No"
-              className="border border-neutral-300 dark:border-neutral-600 dark:bg-neutral-800 dark:text-white px-3 py-2 rounded-lg w-full"
-              value={editForm.data.bank_account_no}
-              onChange={(e) => editForm.setData("bank_account_no", e.target.value)}
-            />
-          </div>
+    {/* Date of Birth Field */}
+    <div>
+      <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
+        Date of Birth
+      </label>
+      <input
+        type="date"
+        placeholder="DOB"
+        className="border border-neutral-300 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white px-4 py-2.5 rounded-lg w-full focus:ring-blue-500 focus:border-blue-500 transition duration-150 shadow-sm"
+        value={editForm.data.dob || ""}
+        onChange={(e) => editForm.setData("dob", e.target.value)}
+      />
+    </div>
 
-          <div>
-            <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
-              IFSC Code
-            </label>
-            <input type="text" placeholder="IFSC"
-              className="border border-neutral-300 dark:border-neutral-600 dark:bg-neutral-800 dark:text-white px-3 py-2 rounded-lg w-full"
-              value={editForm.data.ifsc}
-              onChange={(e) => editForm.setData("ifsc", e.target.value)}
-            />
-          </div>
+    {/* Bank Account No Field */}
+    <div>
+      <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
+        Bank Account No
+      </label>
+      <input
+        type="text"
+        placeholder="Bank Account No"
+        className="border border-neutral-300 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white px-4 py-2.5 rounded-lg w-full focus:ring-blue-500 focus:border-blue-500 transition duration-150 shadow-sm"
+        value={editForm.data.bank_account_no}
+        onChange={(e) => editForm.setData("bank_account_no", e.target.value)}
+      />
+    </div>
 
-          <div>
-            <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
-              PAN No
-            </label>
-            <input type="text" placeholder="PAN No"
-              className="border border-neutral-300 dark:border-neutral-600 dark:bg-neutral-800 dark:text-white px-3 py-2 rounded-lg w-full"
-              value={editForm.data.pan_no}
-              onChange={(e) => editForm.setData("pan_no", e.target.value)}
-            />
-          </div>
+    {/* IFSC Code Field */}
+    <div>
+      <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
+        IFSC Code
+      </label>
+      <input
+        type="text"
+        placeholder="IFSC"
+        className="border border-neutral-300 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white px-4 py-2.5 rounded-lg w-full focus:ring-blue-500 focus:border-blue-500 transition duration-150 shadow-sm"
+        value={editForm.data.ifsc}
+        onChange={(e) => editForm.setData("ifsc", e.target.value)}
+      />
+    </div>
 
-          <div>
-            <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
-              Aadhaar No
-            </label>
-            <input type="text" placeholder="Aadhaar No"
-              className="border border-neutral-300 dark:border-neutral-600 dark:bg-neutral-800 dark:text-white px-3 py-2 rounded-lg w-full"
-              value={editForm.data.aadhaar_no}
-              onChange={(e) => editForm.setData("aadhaar_no", e.target.value)}
-            />
-          </div>
+    {/* PAN No Field */}
+    <div>
+      <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
+        PAN No
+      </label>
+      <input
+        type="text"
+        placeholder="PAN No"
+        className="border border-neutral-300 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white px-4 py-2.5 rounded-lg w-full focus:ring-blue-500 focus:border-blue-500 transition duration-150 shadow-sm"
+        value={editForm.data.pan_no}
+        onChange={(e) => editForm.setData("pan_no", e.target.value)}
+      />
+    </div>
 
-          <div>
-            <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
-              Joining Date
-            </label>
-            <input type="date" placeholder="Joining Date"
-              className="border border-neutral-300 dark:border-neutral-600 dark:bg-neutral-800 dark:text-white px-3 py-2 rounded-lg w-full"
-              value={editForm.data.joining_date || ""}
-              onChange={(e) => editForm.setData("joining_date", e.target.value)}
-            />
-          </div>
+    {/* Aadhaar No Field */}
+    <div>
+      <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
+        Aadhaar No
+      </label>
+      <input
+        type="text"
+        placeholder="Aadhaar No"
+        className="border border-neutral-300 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white px-4 py-2.5 rounded-lg w-full focus:ring-blue-500 focus:border-blue-500 transition duration-150 shadow-sm"
+        value={editForm.data.aadhaar_no}
+        onChange={(e) => editForm.setData("aadhaar_no", e.target.value)}
+      />
+    </div>
 
-          <div>
-            <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
-              Blood Group
-            </label>
-            <select
-              className="border border-neutral-300 dark:border-neutral-600 dark:bg-neutral-800 dark:text-white px-3 py-2 rounded-lg w-full"
-              value={editForm.data.blood_group}
-              onChange={(e) => editForm.setData("blood_group", e.target.value)}
-            >
-              <option value="">Select Blood Group</option>
-              {bloodGroups.map((bg) => (
-                <option key={bg} value={bg}>{bg}</option>
-              ))}
-            </select>
-          </div>
+    {/* Joining Date Field */}
+    <div>
+      <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
+        Joining Date
+      </label>
+      <input
+        type="date"
+        placeholder="Joining Date"
+        className="border border-neutral-300 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white px-4 py-2.5 rounded-lg w-full focus:ring-blue-500 focus:border-blue-500 transition duration-150 shadow-sm"
+        value={editForm.data.joining_date || ""}
+        onChange={(e) => editForm.setData("joining_date", e.target.value)}
+      />
+    </div>
 
-          <div className="flex gap-2 justify-start mt-2">
-            <button
-              type="button"
-              onClick={() => setShowEdit(false)}
-              className="px-4 py-2 rounded-lg border border-neutral-300 dark:border-neutral-600 text-neutral-700 dark:text-neutral-300"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              disabled={editForm.processing}
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
-            >
-              {editForm.processing ? "Saving..." : "Update User"}
-            </button>
-          </div>
-        </form>
-      </Modal>
+    {/* Blood Group Field (Select) */}
+    <div>
+      <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
+        Blood Group
+      </label>
+      <select
+        className="border border-neutral-300 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white px-4 py-2.5 rounded-lg w-full focus:ring-blue-500 focus:border-blue-500 transition duration-150 shadow-sm"
+        value={editForm.data.blood_group}
+        onChange={(e) => editForm.setData("blood_group", e.target.value)}
+      >
+        <option value="">Select Blood Group</option>
+        {/* Assuming bloodGroups is an array of strings */}
+        {bloodGroups.map((bg) => (
+          <option key={bg} value={bg}>{bg}</option>
+        ))}
+      </select>
+    </div>
 
+    {/*
+      3. ACTION BUTTONS
+      Using lg:col-span-full to make buttons take the full width below the grid
+    */}
+    <div className="lg:col-span-full flex gap-3 justify-end mt-4 pt-4 border-t border-neutral-200 dark:border-neutral-700">
+      {/* Cancel Button - Subtle secondary style */}
+      <button
+        type="button"
+        onClick={() => setShowEdit(false)}
+        className="px-6 py-2.5 rounded-lg text-neutral-600 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-700 transition duration-150"
+      >
+        Cancel
+      </button>
+
+      {/* Update Button - Primary, professional look */}
+      <button
+        type="submit"
+        disabled={editForm.processing}
+        className="px-6 py-2.5 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 disabled:opacity-50 disabled:cursor-not-allowed transition duration-150"
+      >
+        {editForm.processing ? "Saving..." : "Update User"}
+      </button>
+    </div>
+  </form>
+</Modal>
       {/* ===================================================================
          UPLOAD DOCUMENTS MODAL
       =================================================================== */}
-      {/* <Modal show={showUploadDocs} onClose={() => setShowUploadDocs(false)}>
-        <h2 className="text-xl font-semibold mb-4 text-neutral-900 dark:text-white">Upload Documents</h2>
-
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            if (!selectedUser) return;
-
-            // build FormData for files if your backend expects multipart/form-data
-            const data = new FormData();
-            (uploadForm.data.documents || []).forEach((f: File, idx: number) => {
-              data.append(`documents[${idx}]`, f);
-            });
-
-            // using Inertia you can post FormData as well; here is a simple post:
-            uploadForm.post(`/super-admin/users/${selectedUser.id}/documents`, {
-              forceFormData: true,
-              onSuccess: () => setShowUploadDocs(false),
-            });
-          }}
-          className="grid gap-4"
-        >
-          <div>
-            <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
-              Documents
-            </label>
-            <input
-              type="file"
-              multiple
-              onChange={(e) =>
-                uploadForm.setData(
-                  "documents",
-                  e.target.files ? Array.from(e.target.files) : []
-                )
-              }
-              className="w-full"
-            />
-            {uploadForm.errors.documents && (
-              <p className="text-red-500 text-sm mt-1">{uploadForm.errors.documents}</p>
-            )}
-          </div>
-
-          <div className="flex gap-2 justify-end">
-            <button
-              type="button"
-              onClick={() => setShowUploadDocs(false)}
-              className="px-4 py-2 rounded-lg border border-neutral-300 dark:border-neutral-600 text-neutral-700 dark:text-neutral-300"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              disabled={uploadForm.processing}
-              className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:opacity-50"
-            >
-              Upload
-            </button>
-          </div>
-        </form>
-      </Modal> */}
 
       <DocumentsModal
           show={showUploadDocs}
@@ -839,8 +876,8 @@ export default function Index({ auth, users, kpi }: Props) {
       {/* ===================================================================
          DELETE MODAL
       =================================================================== */}
-      <Modal show={showDelete} onClose={() => setShowDelete(false)}>
-        <h2 className="text-xl font-semibold mb-4 text-red-600">Delete User</h2>
+      <Modal show={showDelete} onClose={() => setShowDelete(false)} title="Delete User">
+        {/* <h2 className="text-xl font-semibold mb-4 text-red-600">Delete User</h2> */}
 
         <p className="mb-6 text-neutral-700 dark:text-neutral-300">
           Are you sure you want to delete <strong>{selectedUser?.name}</strong>? This action cannot be undone.

@@ -54,6 +54,8 @@ export default function Modal({
                             </h2>
                         )}
 
+                        <hr className="my-4" />
+
                         {/* Scrollable Content */}
                         <div className="max-h-[75vh] overflow-y-auto pr-2 custom-scrollbar">
                             {children}

@@ -52,6 +52,7 @@ class ShiftController extends Controller
             'end_time' => 'required',
             'break_minutes' => 'nullable|integer',
             'tasks' => 'nullable|array',
+            'tasks.*' => 'string',
             'auto_assign_rules' => 'nullable|array',
         ]);
 

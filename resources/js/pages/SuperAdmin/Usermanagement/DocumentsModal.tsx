@@ -50,10 +50,10 @@ export default function DocumentsModal({
     };
 
     return (
-        <Modal show={show} onClose={onClose}>
-            <h2 className="text-xl font-semibold text-neutral-900 dark:text-white mb-4">
+        <Modal show={show} onClose={onClose} title="Manage Documents">
+            {/* <h2 className="text-xl font-semibold text-neutral-900 dark:text-white mb-4">
                 Manage Documents
-            </h2>
+            </h2> */}
 
             {/* Upload Section */}
             <form onSubmit={handleUpload} className="mb-6">

@@ -46,6 +46,9 @@ interface Props {
     bySites: number;
   };
 }
+const breadcrumbs = [
+  { title: "Shift Management", href: "/super-admin/shifts" },
+];
 
 export default function ShiftIndex({ shifts, clients = [], sites = [], filters, kpi }: Props) {
   // UI state
@@ -84,18 +87,28 @@ export default function ShiftIndex({ shifts, clients = [], sites = [], filters, 
   };
 
   return (
-    <AppLayout>
+    <AppLayout breadcrumbs={breadcrumbs}>
       <Head title="Shift Management" />
       <div className="p-6 min-h-screen bg-neutral-50 dark:bg-neutral-950">
-        <h1 className="text-2xl font-semibold mb-6 flex items-center gap-2">
-          <Clock className="h-6 w-6" /> Shift Management
-        </h1>
+      
 
         {/* KPI */}
         <div className="grid md:grid-cols-3 gap-6 mb-8">
-          <KpiCard title="Total Shifts" value={kpi.total} icon={Clock} color="from-blue-500 to-sky-600" />
-          <KpiCard title="Clients with Shifts" value={kpi.byClients} icon={Plus} color="from-green-500 to-emerald-600" />
-          <KpiCard title="Sites with Shifts" value={kpi.bySites} icon={Edit3} color="from-purple-500 to-indigo-600" />
+          <KpiCard title="Total Shifts" value={kpi.total} icon={Clock} bgColorClass="bg-blue-500/10 dark:bg-blue-900/20 border-blue-500/50"
+                // Icon: Solid blue
+                iconColorClass="text-blue-600 dark:text-blue-400"
+                // Hover: Smooth blue gradient
+                color="from-blue-500 to-sky-600" />
+          <KpiCard title="Clients with Shifts" value={kpi.byClients} icon={Plus} bgColorClass="bg-green-500/10 dark:bg-green-900/20 border-green-500/50"
+                // Icon: Solid green
+                iconColorClass="text-green-600 dark:text-green-400"
+                // Hover: Smooth green gradient
+                color="from-green-500 to-emerald-600" />
+          <KpiCard title="Sites with Shifts" value={kpi.bySites} icon={Edit3} bgColorClass="bg-purple-500/10 dark:bg-purple-900/20 border-purple-500/50"
+                // Icon: Solid purple
+                iconColorClass="text-purple-600 dark:text-purple-400"
+                // Hover: Smooth purple gradient
+                color="from-purple-500 to-indigo-600" />
         </div>
 
         {/* Filter bar */}
@@ -117,16 +130,17 @@ export default function ShiftIndex({ shifts, clients = [], sites = [], filters, 
           ]}
           values={filterValues}
           onChange={handleFilter}
+          actionSlot={
+            <Button className="bg-blue-600 text-white" onClick={() => setShowCreate(true)}>
+              <Plus className="w-4 h-4 mr-1" /> New Shift
+            </Button>
+          }
         />
 
-        <div className="flex justify-end mb-4">
-          <Button className="bg-blue-600 text-white" onClick={() => setShowCreate(true)}>
-            <Plus className="w-4 h-4 mr-1" /> New Shift
-          </Button>
-        </div>
+      
 
         {/* Table */}
-        <div className="bg-white dark:bg-neutral-900 p-6 rounded-xl border dark:border-neutral-800">
+        <div className="bg-white dark:bg-neutral-900 p-6 rounded-xl border mt-7 dark:border-neutral-800">
           <Table>
             <TableHeader>
               <TableRow>
@@ -320,7 +334,7 @@ export default function ShiftIndex({ shifts, clients = [], sites = [], filters, 
                     start_time: editing.start_time,
                     end_time: editing.end_time,
                     break_minutes: editing.break_minutes,
-                    tasks: editing.tasks || [],
+                    tasks: editing.tasks ?? [],
                     auto_assign_rules: editing.auto_assign_rules || {},
                   }, {
                     onSuccess: () => setEditing(null),

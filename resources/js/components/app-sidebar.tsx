@@ -113,13 +113,13 @@ function SidebarItemComponent({ item }: { item: NavItem }) {
         "bg-neutral-200 dark:bg-neutral-800 text-neutral-900 dark:text-white font-semibold";
 
     const parentHref = hrefToString(item.href);
-    const isActive = parentHref && url.startsWith(parentHref);
+    const isActive = parentHref && url === parentHref;
 
     const isChildActive = item.children?.some(child =>
         url.startsWith(hrefToString(child.href))
     );
 
-    const shouldOpen = isActive || isChildActive;
+    const shouldOpen = isChildActive || url.startsWith(parentHref + "/");
 
     /* ------------------------------------------
         COLLAPSIBLE ITEM
