@@ -309,7 +309,7 @@ edit.head = (args: { shift: string | number } | [shift: string | number ] | stri
     edit.form = editForm
 /**
 * @see \App\Http\Controllers\SuperAdmin\ShiftController::update
- * @see app/Http/Controllers/SuperAdmin/ShiftController.php:63
+ * @see app/Http/Controllers/SuperAdmin/ShiftController.php:64
  * @route '/super-admin/shifts/{shift}'
  */
 export const update = (args: { shift: number | { id: number } } | [shift: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
@@ -324,7 +324,7 @@ update.definition = {
 
 /**
 * @see \App\Http\Controllers\SuperAdmin\ShiftController::update
- * @see app/Http/Controllers/SuperAdmin/ShiftController.php:63
+ * @see app/Http/Controllers/SuperAdmin/ShiftController.php:64
  * @route '/super-admin/shifts/{shift}'
  */
 update.url = (args: { shift: number | { id: number } } | [shift: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -357,7 +357,7 @@ update.url = (args: { shift: number | { id: number } } | [shift: number | { id: 
 
 /**
 * @see \App\Http\Controllers\SuperAdmin\ShiftController::update
- * @see app/Http/Controllers/SuperAdmin/ShiftController.php:63
+ * @see app/Http/Controllers/SuperAdmin/ShiftController.php:64
  * @route '/super-admin/shifts/{shift}'
  */
 update.put = (args: { shift: number | { id: number } } | [shift: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
@@ -366,7 +366,7 @@ update.put = (args: { shift: number | { id: number } } | [shift: number | { id: 
 })
 /**
 * @see \App\Http\Controllers\SuperAdmin\ShiftController::update
- * @see app/Http/Controllers/SuperAdmin/ShiftController.php:63
+ * @see app/Http/Controllers/SuperAdmin/ShiftController.php:64
  * @route '/super-admin/shifts/{shift}'
  */
 update.patch = (args: { shift: number | { id: number } } | [shift: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -376,7 +376,7 @@ update.patch = (args: { shift: number | { id: number } } | [shift: number | { id
 
     /**
 * @see \App\Http\Controllers\SuperAdmin\ShiftController::update
- * @see app/Http/Controllers/SuperAdmin/ShiftController.php:63
+ * @see app/Http/Controllers/SuperAdmin/ShiftController.php:64
  * @route '/super-admin/shifts/{shift}'
  */
     const updateForm = (args: { shift: number | { id: number } } | [shift: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -391,7 +391,7 @@ update.patch = (args: { shift: number | { id: number } } | [shift: number | { id
 
             /**
 * @see \App\Http\Controllers\SuperAdmin\ShiftController::update
- * @see app/Http/Controllers/SuperAdmin/ShiftController.php:63
+ * @see app/Http/Controllers/SuperAdmin/ShiftController.php:64
  * @route '/super-admin/shifts/{shift}'
  */
         updateForm.put = (args: { shift: number | { id: number } } | [shift: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -405,7 +405,7 @@ update.patch = (args: { shift: number | { id: number } } | [shift: number | { id
         })
             /**
 * @see \App\Http\Controllers\SuperAdmin\ShiftController::update
- * @see app/Http/Controllers/SuperAdmin/ShiftController.php:63
+ * @see app/Http/Controllers/SuperAdmin/ShiftController.php:64
  * @route '/super-admin/shifts/{shift}'
  */
         updateForm.patch = (args: { shift: number | { id: number } } | [shift: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -421,7 +421,7 @@ update.patch = (args: { shift: number | { id: number } } | [shift: number | { id
     update.form = updateForm
 /**
 * @see \App\Http\Controllers\SuperAdmin\ShiftController::destroy
- * @see app/Http/Controllers/SuperAdmin/ShiftController.php:81
+ * @see app/Http/Controllers/SuperAdmin/ShiftController.php:82
  * @route '/super-admin/shifts/{shift}'
  */
 export const destroy = (args: { shift: number | { id: number } } | [shift: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -436,7 +436,7 @@ destroy.definition = {
 
 /**
 * @see \App\Http\Controllers\SuperAdmin\ShiftController::destroy
- * @see app/Http/Controllers/SuperAdmin/ShiftController.php:81
+ * @see app/Http/Controllers/SuperAdmin/ShiftController.php:82
  * @route '/super-admin/shifts/{shift}'
  */
 destroy.url = (args: { shift: number | { id: number } } | [shift: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -469,7 +469,7 @@ destroy.url = (args: { shift: number | { id: number } } | [shift: number | { id:
 
 /**
 * @see \App\Http\Controllers\SuperAdmin\ShiftController::destroy
- * @see app/Http/Controllers/SuperAdmin/ShiftController.php:81
+ * @see app/Http/Controllers/SuperAdmin/ShiftController.php:82
  * @route '/super-admin/shifts/{shift}'
  */
 destroy.delete = (args: { shift: number | { id: number } } | [shift: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -479,7 +479,7 @@ destroy.delete = (args: { shift: number | { id: number } } | [shift: number | { 
 
     /**
 * @see \App\Http\Controllers\SuperAdmin\ShiftController::destroy
- * @see app/Http/Controllers/SuperAdmin/ShiftController.php:81
+ * @see app/Http/Controllers/SuperAdmin/ShiftController.php:82
  * @route '/super-admin/shifts/{shift}'
  */
     const destroyForm = (args: { shift: number | { id: number } } | [shift: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -494,7 +494,7 @@ destroy.delete = (args: { shift: number | { id: number } } | [shift: number | { 
 
             /**
 * @see \App\Http\Controllers\SuperAdmin\ShiftController::destroy
- * @see app/Http/Controllers/SuperAdmin/ShiftController.php:81
+ * @see app/Http/Controllers/SuperAdmin/ShiftController.php:82
  * @route '/super-admin/shifts/{shift}'
  */
         destroyForm.delete = (args: { shift: number | { id: number } } | [shift: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({

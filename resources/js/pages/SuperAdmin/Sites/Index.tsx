@@ -37,6 +37,7 @@ import {
     TrendingUp,
     Edit,
 } from "lucide-react";
+import { BreadcrumbItem } from "@/types";
 
 interface Props {
     sites: any;
@@ -48,6 +49,9 @@ interface Props {
         clients: number;
     };
 }
+const breadcrumbs: BreadcrumbItem[] = [
+  { title: "Site Management", href: "/super-admin/sites" },
+];
 
 export default function SiteIndex({ sites, clients, filters, kpi }: Props) {
     const [showCreate, setShowCreate] = useState(false);
@@ -74,20 +78,23 @@ export default function SiteIndex({ sites, clients, filters, kpi }: Props) {
     });
 
     return (
-        <AppLayout>
+        <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Site Management" />
 
             <div className="p-6 min-h-screen bg-neutral-50 dark:bg-neutral-950">
 
-                <h1 className="text-2xl font-semibold flex items-center gap-2 mb-6">
-                    <Building className="h-6 w-6" /> Site Management
-                </h1>
 
                 {/* KPI CARDS */}
                 <div className="grid md:grid-cols-3 gap-6 mb-8">
-                    <KpiCard title="Total Sites" value={kpi.total} icon={Building} color="from-blue-500 to-sky-600" />
-                    <KpiCard title="Geo-Active Sites" value={kpi.active} icon={MapPin} color="from-green-500 to-emerald-600" />
-                    <KpiCard title="Client Count" value={kpi.clients} icon={TrendingUp} color="from-purple-500 to-indigo-600" />
+                    <KpiCard title="Total Sites" value={kpi.total} icon={Building} bgColorClass="bg-blue-500/10 dark:bg-blue-900/20 border-blue-500/50"
+                iconColorClass="text-blue-600 dark:text-blue-400"
+                color="from-blue-500 to-sky-600" />
+                    <KpiCard title="Geo-Active Sites" value={kpi.active} icon={MapPin} bgColorClass="bg-green-500/10 dark:bg-green-900/20 border-green-500/50"
+                iconColorClass="text-green-600 dark:text-green-400"
+                color="from-green-500 to-emerald-600" />
+                    <KpiCard title="Client Count" value={kpi.clients} icon={TrendingUp} bgColorClass="bg-purple-500/10 dark:bg-purple-900/20 border-purple-500/50"
+                iconColorClass="text-purple-600 dark:text-purple-400"
+                color="from-purple-500 to-indigo-600" />
                 </div>
 
                 {/* Dynamic Filter Bar */}
@@ -115,20 +122,19 @@ export default function SiteIndex({ sites, clients, filters, kpi }: Props) {
                     ]}
                     values={filterValues}
                     onChange={handleFilter}
+                    actionSlot={
+                        <Button
+                            className="bg-blue-600 text-white"
+                            onClick={() => setShowCreate(true)}
+                        >
+                            <Plus className="w-4 h-4 mr-1" /> Add Site
+                        </Button>
+                    }
                 />
 
-                {/* Add Site Button */}
-                <div className="flex justify-end mb-4">
-                    <Button
-                        className="bg-blue-600 text-white"
-                        onClick={() => setShowCreate(true)}
-                    >
-                        <Plus className="w-4 h-4 mr-1" /> Add Site
-                    </Button>
-                </div>
 
                 {/* TABLE */}
-                <div className="bg-white dark:bg-neutral-900 p-6 rounded-xl border dark:border-neutral-800">
+                <div className="bg-white dark:bg-neutral-900 p-6 rounded-xl border mt-8 dark:border-neutral-800">
 
                     <Table>
                         <TableHeader>
@@ -206,131 +212,142 @@ export default function SiteIndex({ sites, clients, filters, kpi }: Props) {
                         </Pagination>
                     </div>
                 </div>
-{editing && (
-    <Modal
-        show={!!editing}
-        onClose={() => setEditing(null)}
-        title="Edit Site"
-    >
-        <div className="grid gap-4">
+                {editing && (
+                    <Modal
+                        show={!!editing}
+                        onClose={() => setEditing(null)}
+                        title="Edit Site"
+                    >
+                        <form
+                            onSubmit={(e) => {
+                                e.preventDefault();
+                                // Submitting the form data using the router.put method
+                                router.put(`/super-admin/sites/${editing.id}`, {
+                                    client_id: editing.client_id,
+                                    site_name: editing.site_name,
+                                    address: editing.address,
+                                    geo_lat: editing.geo_lat || null,
+                                    geo_lng: editing.geo_lng || null,
+                                }, {
+                                    onSuccess: () => setEditing(null)
+                                });
+                            }}
+                            // Use a grid with better spacing for modern look
+                            className="grid gap-5 grid-cols-1 sm:grid-cols-2"
+                        >
 
-            {/* CLIENT */}
-            <select
-                className="border rounded p-2 dark:bg-neutral-800"
-                value={editing.client_id}
-                onChange={(e) =>
-                    setEditing({ ...editing, client_id: e.target.value })
-                }
-            >
-                <option value="">Select Client</option>
-                {clients.map((c: any) => (
-                    <option key={c.id} value={c.id}>
-                        {c.name}
-                    </option>
-                ))}
-            </select>
+                            {/* 1. CLIENT SELECT */}
+                            <div className="sm:col-span-2">
+                                <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
+                                    Client <span className="text-red-500">*</span>
+                                </label>
+                                <select
+                                    // Modern Select Styling: Matches the professional input style
+                                    className="border border-neutral-300 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white 
+                                            px-4 py-2.5 rounded-lg w-full focus:ring-blue-500 focus:border-blue-500 
+                                            transition duration-150 shadow-sm appearance-none cursor-pointer"
+                                    value={editing.client_id}
+                                    onChange={(e) =>
+                                        setEditing({ ...editing, client_id: e.target.value })
+                                    }
+                                    required
+                                >
+                                    <option value="" disabled>Select Client</option>
+                                    {clients.map((c: any) => (
+                                        <option key={c.id} value={c.id}>
+                                            {c.name}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
 
-            {/* Site Name */}
-            <Input
-                placeholder="Site Name"
-                value={editing.site_name}
-                onChange={(e) =>
-                    setEditing({ ...editing, site_name: e.target.value })
-                }
-            />
+                            {/* 2. Site Name */}
+                            <div className="sm:col-span-2">
+                                <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
+                                    Site Name <span className="text-red-500">*</span>
+                                </label>
+                                <Input
+                                    placeholder="e.g., Downtown Headquarters"
+                                    value={editing.site_name}
+                                    onChange={(e) =>
+                                        setEditing({ ...editing, site_name: e.target.value })
+                                    }
+                                    required
+                                />
+                            </div>
 
-            {/* Address */}
-            <Input
-                placeholder="Address"
-                value={editing.address}
-                onChange={(e) =>
-                    setEditing({ ...editing, address: e.target.value })
-                }
-            />
+                            {/* 3. Address */}
+                            <div className="sm:col-span-2">
+                                <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
+                                    Full Address
+                                </label>
+                                <Input
+                                    placeholder="123 Main St, City, Country"
+                                    value={editing.address}
+                                    onChange={(e) =>
+                                        setEditing({ ...editing, address: e.target.value })
+                                    }
+                                />
+                            </div>
 
-            {/* Latitude */}
-            <Input
-                placeholder="Latitude (-90 to +90)"
-                value={editing.geo_lat || ""}
-                onChange={(e) =>
-                    setEditing({ ...editing, geo_lat: e.target.value })
-                }
-            />
+                            {/* 4. Latitude (Half-width) */}
+                            <div>
+                                <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
+                                    Latitude (Geo-tag)
+                                </label>
+                                <Input
+                                    placeholder="e.g., 28.6139"
+                                    value={editing.geo_lat || ""}
+                                    onChange={(e) =>
+                                        setEditing({ ...editing, geo_lat: e.target.value })
+                                    }
+                                />
+                            </div>
 
-            {/* Longitude */}
-            <Input
-                placeholder="Longitude (-180 to +180)"
-                value={editing.geo_lng || ""}
-                onChange={(e) =>
-                    setEditing({ ...editing, geo_lng: e.target.value })
-                }
-            />
+                            {/* 5. Longitude (Half-width) */}
+                            <div>
+                                <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
+                                    Longitude (Geo-tag)
+                                </label>
+                                <Input
+                                    placeholder="e.g., 77.2090"
+                                    value={editing.geo_lng || ""}
+                                    onChange={(e) =>
+                                        setEditing({ ...editing, geo_lng: e.target.value })
+                                    }
+                                />
+                            </div>
 
-            {/* Save Button */}
-            <Button
-                className="bg-blue-600 text-white"
-                onClick={() =>
-                    router.put(`/super-admin/sites/${editing.id}`, {
-                        client_id: editing.client_id,
-                        site_name: editing.site_name,
-                        address: editing.address,
-                        geo_lat: editing.geo_lat || null,
-                        geo_lng: editing.geo_lng || null,
-                    }, {
-                        onSuccess: () => setEditing(null)
-                    })
-                }
-            >
-                Save Changes
-            </Button>
-
-        </div>
-    </Modal>
-)}
+                            {/* 6. ACTION BUTTONS (Separated and aligned) */}
+                            <div className="sm:col-span-2 pt-4 flex justify-end gap-3">
+                                {/* Cancel Button - Subtle secondary style */}
+                                <button
+                                    type="button"
+                                    onClick={() => setEditing(null)}
+                                    className="px-6 py-2.5 rounded-lg text-neutral-600 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-700 transition duration-150"
+                                >
+                                    Cancel
+                                </button>
+                                
+                                {/* Save Button - Primary, professional look */}
+                                <Button
+                                    type="submit"
+                                    // Professional Button Styling Suggestion (assuming Button component applies this):
+                                    className="px-6 py-2.5 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition duration-150"
+                                >
+                                    Save Changes
+                                </Button>
+                            </div>
+                        </form>
+                    </Modal>
+                    )}
 
                 {/* CREATE MODAL */}
-                {showCreate && (
-                    <Modal show={showCreate} onClose={() => setShowCreate(false)} title="Add New Site">
-                        <div className="grid gap-4">
-
-                            <select
-                                className="border rounded p-2 dark:bg-neutral-800"
-                                value={createForm.client_id}
-                                onChange={(e) => setCreateForm({ ...createForm, client_id: e.target.value })}
-                            >
-                                <option value="">Select Client</option>
-                                {(clients ?? []).map((c: any) => (
-                                    <option key={c.id} value={c.id}>{c.name}</option>
-                                ))}
-                            </select>
-
-                            <Input
-                                placeholder="Site Name"
-                                value={createForm.site_name}
-                                onChange={(e) => setCreateForm({ ...createForm, site_name: e.target.value })}
-                            />
-
-                            <Input
-                                placeholder="Address"
-                                value={createForm.address}
-                                onChange={(e) => setCreateForm({ ...createForm, address: e.target.value })}
-                            />
-
-                            <Input
-                                placeholder="Latitude"
-                                value={createForm.geo_lat}
-                                onChange={(e) => setCreateForm({ ...createForm, geo_lat: e.target.value })}
-                            />
-
-                            <Input
-                                placeholder="Longitude"
-                                value={createForm.geo_lng}
-                                onChange={(e) => setCreateForm({ ...createForm, geo_lng: e.target.value })}
-                            />
-
-                            <Button
-                                className="bg-blue-600 text-white"
-                                onClick={() =>
+               {showCreate && (
+                        <Modal show={showCreate} onClose={() => setShowCreate(false)} title="Add New Site">
+                            <form
+                                onSubmit={(e) => {
+                                    e.preventDefault();
                                     router.post("/super-admin/sites", createForm, {
                                         onSuccess: () => {
                                             setShowCreate(false);
@@ -341,16 +358,99 @@ export default function SiteIndex({ sites, clients, filters, kpi }: Props) {
                                                 geo_lat: "",
                                                 geo_lng: "",
                                             });
-                                        }
-                                    })
-                                }
+                                        },
+                                    });
+                                }}
+                                // Use a grid with better spacing
+                                className="grid gap-5 grid-cols-1 sm:grid-cols-2"
                             >
-                                Save Site
-                            </Button>
+                                {/* 1. Select Client */}
+                                <div className="sm:col-span-2">
+                                    <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
+                                        Client <span className="text-red-500">*</span>
+                                    </label>
+                                    <select
+                                        // Modern Select Styling
+                                        className="border border-neutral-300 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white 
+                                                    px-4 py-2.5 rounded-lg w-full focus:ring-blue-500 focus:border-blue-500 
+                                                    transition duration-150 shadow-sm appearance-none cursor-pointer"
+                                        value={createForm.client_id}
+                                        onChange={(e) => setCreateForm({ ...createForm, client_id: e.target.value })}
+                                        required
+                                    >
+                                        <option value="" disabled>Select Client</option>
+                                        {(clients ?? []).map((c: any) => (
+                                            <option key={c.id} value={c.id}>{c.name}</option>
+                                        ))}
+                                    </select>
+                                </div>
 
-                        </div>
-                    </Modal>
-                )}
+                                {/* 2. Site Name */}
+                                <div className="sm:col-span-2">
+                                    <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
+                                        Site Name <span className="text-red-500">*</span>
+                                    </label>
+                                    {/* Assuming your Input component applies professional classes (like the ones used in the previous modal) */}
+                                    <Input
+                                        placeholder="e.g., Downtown Headquarters"
+                                        // Suggestion for Input internal classes: 
+                                        // "border border-neutral-300 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white px-4 py-2.5 rounded-lg w-full focus:ring-blue-500 focus:border-blue-500 shadow-sm"
+                                        value={createForm.site_name}
+                                        onChange={(e) => setCreateForm({ ...createForm, site_name: e.target.value })}
+                                        required
+                                    />
+                                </div>
+
+                                {/* 3. Address (Full-width) */}
+                                <div className="sm:col-span-2">
+                                    <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
+                                        Full Address
+                                    </label>
+                                    <Input
+                                        placeholder="123 Main St, City, Country"
+                                        value={createForm.address}
+                                        onChange={(e) => setCreateForm({ ...createForm, address: e.target.value })}
+                                    />
+                                </div>
+
+                                {/* 4. Latitude (Half-width) */}
+                                <div>
+                                    <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
+                                        Latitude (Geo-tag)
+                                    </label>
+                                    <Input
+                                        placeholder="e.g., 28.6139"
+                                        value={createForm.geo_lat}
+                                        onChange={(e) => setCreateForm({ ...createForm, geo_lat: e.target.value })}
+                                    />
+                                </div>
+
+                                {/* 5. Longitude (Half-width) */}
+                                <div>
+                                    <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
+                                        Longitude (Geo-tag)
+                                    </label>
+                                    <Input
+                                        placeholder="e.g., 77.2090"
+                                        value={createForm.geo_lng}
+                                        onChange={(e) => setCreateForm({ ...createForm, geo_lng: e.target.value })}
+                                    />
+                                </div>
+
+                                {/* 6. Action Button (Full-width, clearly separated) */}
+                                <div className="sm:col-span-2 pt-4 flex justify-end">
+                                    {/* Assuming your Button component is a styled wrapper */}
+                                    <Button
+                                        type="submit"
+                                        // Professional Button Styling Suggestion:
+                                        className="px-6 py-2.5 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition duration-150"
+                                    >
+                                        Save Site
+                                    </Button>
+                                </div>
+                            </form>
+                        </Modal>
+                    )}
 
                 {/* DELETE MODAL */}
                 {deleting && (
