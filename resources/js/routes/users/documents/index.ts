@@ -4,7 +4,7 @@ import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFo
  * @see app/Http/Controllers/SuperAdmin/UserManagementController.php:200
  * @route '/super-admin/users/{user}/documents'
  */
-export const upload = (args: { user: string | number | { id: string | number } } | [user: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+export const upload = (args: { user: number | { id: number } } | [user: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: upload.url(args, options),
     method: 'post',
 })
@@ -19,7 +19,7 @@ upload.definition = {
  * @see app/Http/Controllers/SuperAdmin/UserManagementController.php:200
  * @route '/super-admin/users/{user}/documents'
  */
-upload.url = (args: { user: string | number | { id: string | number } } | [user: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions) => {
+upload.url = (args: { user: number | { id: number } } | [user: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { user: args }
     }
@@ -52,7 +52,7 @@ upload.url = (args: { user: string | number | { id: string | number } } | [user:
  * @see app/Http/Controllers/SuperAdmin/UserManagementController.php:200
  * @route '/super-admin/users/{user}/documents'
  */
-upload.post = (args: { user: string | number | { id: string | number } } | [user: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+upload.post = (args: { user: number | { id: number } } | [user: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: upload.url(args, options),
     method: 'post',
 })
@@ -62,7 +62,7 @@ upload.post = (args: { user: string | number | { id: string | number } } | [user
  * @see app/Http/Controllers/SuperAdmin/UserManagementController.php:200
  * @route '/super-admin/users/{user}/documents'
  */
-    const uploadForm = (args: { user: string | number | { id: string | number } } | [user: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    const uploadForm = (args: { user: number | { id: number } } | [user: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: upload.url(args, options),
         method: 'post',
     })
@@ -72,7 +72,7 @@ upload.post = (args: { user: string | number | { id: string | number } } | [user
  * @see app/Http/Controllers/SuperAdmin/UserManagementController.php:200
  * @route '/super-admin/users/{user}/documents'
  */
-        uploadForm.post = (args: { user: string | number | { id: string | number } } | [user: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        uploadForm.post = (args: { user: number | { id: number } } | [user: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: upload.url(args, options),
             method: 'post',
         })
@@ -83,7 +83,7 @@ upload.post = (args: { user: string | number | { id: string | number } } | [user
  * @see app/Http/Controllers/SuperAdmin/UserManagementController.php:226
  * @route '/super-admin/users/{user}/documents/{doc}/verify'
  */
-export const verify = (args: { user: string | number | { id: string | number }, doc: string | number | { id: string | number } } | [user: string | number | { id: string | number }, doc: string | number | { id: string | number } ], options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+export const verify = (args: { user: number | { id: number }, doc: number | { id: number } } | [user: number | { id: number }, doc: number | { id: number } ], options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: verify.url(args, options),
     method: 'post',
 })
@@ -98,7 +98,7 @@ verify.definition = {
  * @see app/Http/Controllers/SuperAdmin/UserManagementController.php:226
  * @route '/super-admin/users/{user}/documents/{doc}/verify'
  */
-verify.url = (args: { user: string | number | { id: string | number }, doc: string | number | { id: string | number } } | [user: string | number | { id: string | number }, doc: string | number | { id: string | number } ], options?: RouteQueryOptions) => {
+verify.url = (args: { user: number | { id: number }, doc: number | { id: number } } | [user: number | { id: number }, doc: number | { id: number } ], options?: RouteQueryOptions) => {
     if (Array.isArray(args)) {
         args = {
                     user: args[0],
@@ -128,7 +128,7 @@ verify.url = (args: { user: string | number | { id: string | number }, doc: stri
  * @see app/Http/Controllers/SuperAdmin/UserManagementController.php:226
  * @route '/super-admin/users/{user}/documents/{doc}/verify'
  */
-verify.post = (args: { user: string | number | { id: string | number }, doc: string | number | { id: string | number } } | [user: string | number | { id: string | number }, doc: string | number | { id: string | number } ], options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+verify.post = (args: { user: number | { id: number }, doc: number | { id: number } } | [user: number | { id: number }, doc: number | { id: number } ], options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: verify.url(args, options),
     method: 'post',
 })
@@ -138,7 +138,7 @@ verify.post = (args: { user: string | number | { id: string | number }, doc: str
  * @see app/Http/Controllers/SuperAdmin/UserManagementController.php:226
  * @route '/super-admin/users/{user}/documents/{doc}/verify'
  */
-    const verifyForm = (args: { user: string | number | { id: string | number }, doc: string | number | { id: string | number } } | [user: string | number | { id: string | number }, doc: string | number | { id: string | number } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    const verifyForm = (args: { user: number | { id: number }, doc: number | { id: number } } | [user: number | { id: number }, doc: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: verify.url(args, options),
         method: 'post',
     })
@@ -148,7 +148,7 @@ verify.post = (args: { user: string | number | { id: string | number }, doc: str
  * @see app/Http/Controllers/SuperAdmin/UserManagementController.php:226
  * @route '/super-admin/users/{user}/documents/{doc}/verify'
  */
-        verifyForm.post = (args: { user: string | number | { id: string | number }, doc: string | number | { id: string | number } } | [user: string | number | { id: string | number }, doc: string | number | { id: string | number } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        verifyForm.post = (args: { user: number | { id: number }, doc: number | { id: number } } | [user: number | { id: number }, doc: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: verify.url(args, options),
             method: 'post',
         })
@@ -159,7 +159,7 @@ verify.post = (args: { user: string | number | { id: string | number }, doc: str
  * @see app/Http/Controllers/SuperAdmin/UserManagementController.php:243
  * @route '/super-admin/users/{user}/documents/{doc}'
  */
-export const deleteMethod = (args: { user: string | number | { id: string | number }, doc: string | number | { id: string | number } } | [user: string | number | { id: string | number }, doc: string | number | { id: string | number } ], options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
+export const deleteMethod = (args: { user: number | { id: number }, doc: number | { id: number } } | [user: number | { id: number }, doc: number | { id: number } ], options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
     url: deleteMethod.url(args, options),
     method: 'delete',
 })
@@ -174,7 +174,7 @@ deleteMethod.definition = {
  * @see app/Http/Controllers/SuperAdmin/UserManagementController.php:243
  * @route '/super-admin/users/{user}/documents/{doc}'
  */
-deleteMethod.url = (args: { user: string | number | { id: string | number }, doc: string | number | { id: string | number } } | [user: string | number | { id: string | number }, doc: string | number | { id: string | number } ], options?: RouteQueryOptions) => {
+deleteMethod.url = (args: { user: number | { id: number }, doc: number | { id: number } } | [user: number | { id: number }, doc: number | { id: number } ], options?: RouteQueryOptions) => {
     if (Array.isArray(args)) {
         args = {
                     user: args[0],
@@ -204,7 +204,7 @@ deleteMethod.url = (args: { user: string | number | { id: string | number }, doc
  * @see app/Http/Controllers/SuperAdmin/UserManagementController.php:243
  * @route '/super-admin/users/{user}/documents/{doc}'
  */
-deleteMethod.delete = (args: { user: string | number | { id: string | number }, doc: string | number | { id: string | number } } | [user: string | number | { id: string | number }, doc: string | number | { id: string | number } ], options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
+deleteMethod.delete = (args: { user: number | { id: number }, doc: number | { id: number } } | [user: number | { id: number }, doc: number | { id: number } ], options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
     url: deleteMethod.url(args, options),
     method: 'delete',
 })
@@ -214,7 +214,7 @@ deleteMethod.delete = (args: { user: string | number | { id: string | number }, 
  * @see app/Http/Controllers/SuperAdmin/UserManagementController.php:243
  * @route '/super-admin/users/{user}/documents/{doc}'
  */
-    const deleteMethodForm = (args: { user: string | number | { id: string | number }, doc: string | number | { id: string | number } } | [user: string | number | { id: string | number }, doc: string | number | { id: string | number } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    const deleteMethodForm = (args: { user: number | { id: number }, doc: number | { id: number } } | [user: number | { id: number }, doc: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: deleteMethod.url(args, {
                     [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                         _method: 'DELETE',
@@ -229,7 +229,7 @@ deleteMethod.delete = (args: { user: string | number | { id: string | number }, 
  * @see app/Http/Controllers/SuperAdmin/UserManagementController.php:243
  * @route '/super-admin/users/{user}/documents/{doc}'
  */
-        deleteMethodForm.delete = (args: { user: string | number | { id: string | number }, doc: string | number | { id: string | number } } | [user: string | number | { id: string | number }, doc: string | number | { id: string | number } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        deleteMethodForm.delete = (args: { user: number | { id: number }, doc: number | { id: number } } | [user: number | { id: number }, doc: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: deleteMethod.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'DELETE',

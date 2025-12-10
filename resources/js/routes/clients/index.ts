@@ -409,7 +409,7 @@ edit.head = (args: { client: string | number } | [client: string | number ] | st
  * @see app/Http/Controllers/SuperAdmin/ClientController.php:58
  * @route '/super-admin/clients/{client}'
  */
-export const update = (args: { client: string | number | { id: string | number } } | [client: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
+export const update = (args: { client: number | { id: number } } | [client: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
     url: update.url(args, options),
     method: 'put',
 })
@@ -424,7 +424,7 @@ update.definition = {
  * @see app/Http/Controllers/SuperAdmin/ClientController.php:58
  * @route '/super-admin/clients/{client}'
  */
-update.url = (args: { client: string | number | { id: string | number } } | [client: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions) => {
+update.url = (args: { client: number | { id: number } } | [client: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { client: args }
     }
@@ -457,7 +457,7 @@ update.url = (args: { client: string | number | { id: string | number } } | [cli
  * @see app/Http/Controllers/SuperAdmin/ClientController.php:58
  * @route '/super-admin/clients/{client}'
  */
-update.put = (args: { client: string | number | { id: string | number } } | [client: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
+update.put = (args: { client: number | { id: number } } | [client: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
     url: update.url(args, options),
     method: 'put',
 })
@@ -466,7 +466,7 @@ update.put = (args: { client: string | number | { id: string | number } } | [cli
  * @see app/Http/Controllers/SuperAdmin/ClientController.php:58
  * @route '/super-admin/clients/{client}'
  */
-update.patch = (args: { client: string | number | { id: string | number } } | [client: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
+update.patch = (args: { client: number | { id: number } } | [client: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
     url: update.url(args, options),
     method: 'patch',
 })
@@ -476,7 +476,7 @@ update.patch = (args: { client: string | number | { id: string | number } } | [c
  * @see app/Http/Controllers/SuperAdmin/ClientController.php:58
  * @route '/super-admin/clients/{client}'
  */
-    const updateForm = (args: { client: string | number | { id: string | number } } | [client: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    const updateForm = (args: { client: number | { id: number } } | [client: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: update.url(args, {
                     [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                         _method: 'PUT',
@@ -491,7 +491,7 @@ update.patch = (args: { client: string | number | { id: string | number } } | [c
  * @see app/Http/Controllers/SuperAdmin/ClientController.php:58
  * @route '/super-admin/clients/{client}'
  */
-        updateForm.put = (args: { client: string | number | { id: string | number } } | [client: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        updateForm.put = (args: { client: number | { id: number } } | [client: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: update.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'PUT',
@@ -505,7 +505,7 @@ update.patch = (args: { client: string | number | { id: string | number } } | [c
  * @see app/Http/Controllers/SuperAdmin/ClientController.php:58
  * @route '/super-admin/clients/{client}'
  */
-        updateForm.patch = (args: { client: string | number | { id: string | number } } | [client: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        updateForm.patch = (args: { client: number | { id: number } } | [client: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: update.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'PATCH',
@@ -521,7 +521,7 @@ update.patch = (args: { client: string | number | { id: string | number } } | [c
  * @see app/Http/Controllers/SuperAdmin/ClientController.php:75
  * @route '/super-admin/clients/{client}'
  */
-export const destroy = (args: { client: string | number | { id: string | number } } | [client: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
+export const destroy = (args: { client: number | { id: number } } | [client: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
     url: destroy.url(args, options),
     method: 'delete',
 })
@@ -536,7 +536,7 @@ destroy.definition = {
  * @see app/Http/Controllers/SuperAdmin/ClientController.php:75
  * @route '/super-admin/clients/{client}'
  */
-destroy.url = (args: { client: string | number | { id: string | number } } | [client: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions) => {
+destroy.url = (args: { client: number | { id: number } } | [client: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { client: args }
     }
@@ -569,7 +569,7 @@ destroy.url = (args: { client: string | number | { id: string | number } } | [cl
  * @see app/Http/Controllers/SuperAdmin/ClientController.php:75
  * @route '/super-admin/clients/{client}'
  */
-destroy.delete = (args: { client: string | number | { id: string | number } } | [client: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
+destroy.delete = (args: { client: number | { id: number } } | [client: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
     url: destroy.url(args, options),
     method: 'delete',
 })
@@ -579,7 +579,7 @@ destroy.delete = (args: { client: string | number | { id: string | number } } | 
  * @see app/Http/Controllers/SuperAdmin/ClientController.php:75
  * @route '/super-admin/clients/{client}'
  */
-    const destroyForm = (args: { client: string | number | { id: string | number } } | [client: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    const destroyForm = (args: { client: number | { id: number } } | [client: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: destroy.url(args, {
                     [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                         _method: 'DELETE',
@@ -594,7 +594,7 @@ destroy.delete = (args: { client: string | number | { id: string | number } } | 
  * @see app/Http/Controllers/SuperAdmin/ClientController.php:75
  * @route '/super-admin/clients/{client}'
  */
-        destroyForm.delete = (args: { client: string | number | { id: string | number } } | [client: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        destroyForm.delete = (args: { client: number | { id: number } } | [client: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: destroy.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'DELETE',

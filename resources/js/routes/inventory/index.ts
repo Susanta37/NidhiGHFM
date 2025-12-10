@@ -409,7 +409,7 @@ edit.head = (args: { inventory: string | number } | [inventory: string | number 
  * @see app/Http/Controllers/SuperAdmin/InventoryController.php:56
  * @route '/super-admin/inventory/{inventory}'
  */
-export const update = (args: { inventory: string | number | { id: string | number } } | [inventory: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
+export const update = (args: { inventory: number | { id: number } } | [inventory: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
     url: update.url(args, options),
     method: 'put',
 })
@@ -424,7 +424,7 @@ update.definition = {
  * @see app/Http/Controllers/SuperAdmin/InventoryController.php:56
  * @route '/super-admin/inventory/{inventory}'
  */
-update.url = (args: { inventory: string | number | { id: string | number } } | [inventory: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions) => {
+update.url = (args: { inventory: number | { id: number } } | [inventory: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { inventory: args }
     }
@@ -457,7 +457,7 @@ update.url = (args: { inventory: string | number | { id: string | number } } | [
  * @see app/Http/Controllers/SuperAdmin/InventoryController.php:56
  * @route '/super-admin/inventory/{inventory}'
  */
-update.put = (args: { inventory: string | number | { id: string | number } } | [inventory: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
+update.put = (args: { inventory: number | { id: number } } | [inventory: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
     url: update.url(args, options),
     method: 'put',
 })
@@ -466,7 +466,7 @@ update.put = (args: { inventory: string | number | { id: string | number } } | [
  * @see app/Http/Controllers/SuperAdmin/InventoryController.php:56
  * @route '/super-admin/inventory/{inventory}'
  */
-update.patch = (args: { inventory: string | number | { id: string | number } } | [inventory: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
+update.patch = (args: { inventory: number | { id: number } } | [inventory: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
     url: update.url(args, options),
     method: 'patch',
 })
@@ -476,7 +476,7 @@ update.patch = (args: { inventory: string | number | { id: string | number } } |
  * @see app/Http/Controllers/SuperAdmin/InventoryController.php:56
  * @route '/super-admin/inventory/{inventory}'
  */
-    const updateForm = (args: { inventory: string | number | { id: string | number } } | [inventory: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    const updateForm = (args: { inventory: number | { id: number } } | [inventory: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: update.url(args, {
                     [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                         _method: 'PUT',
@@ -491,7 +491,7 @@ update.patch = (args: { inventory: string | number | { id: string | number } } |
  * @see app/Http/Controllers/SuperAdmin/InventoryController.php:56
  * @route '/super-admin/inventory/{inventory}'
  */
-        updateForm.put = (args: { inventory: string | number | { id: string | number } } | [inventory: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        updateForm.put = (args: { inventory: number | { id: number } } | [inventory: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: update.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'PUT',
@@ -505,7 +505,7 @@ update.patch = (args: { inventory: string | number | { id: string | number } } |
  * @see app/Http/Controllers/SuperAdmin/InventoryController.php:56
  * @route '/super-admin/inventory/{inventory}'
  */
-        updateForm.patch = (args: { inventory: string | number | { id: string | number } } | [inventory: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        updateForm.patch = (args: { inventory: number | { id: number } } | [inventory: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: update.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'PATCH',
@@ -521,7 +521,7 @@ update.patch = (args: { inventory: string | number | { id: string | number } } |
  * @see app/Http/Controllers/SuperAdmin/InventoryController.php:69
  * @route '/super-admin/inventory/{inventory}'
  */
-export const destroy = (args: { inventory: string | number | { id: string | number } } | [inventory: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
+export const destroy = (args: { inventory: number | { id: number } } | [inventory: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
     url: destroy.url(args, options),
     method: 'delete',
 })
@@ -536,7 +536,7 @@ destroy.definition = {
  * @see app/Http/Controllers/SuperAdmin/InventoryController.php:69
  * @route '/super-admin/inventory/{inventory}'
  */
-destroy.url = (args: { inventory: string | number | { id: string | number } } | [inventory: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions) => {
+destroy.url = (args: { inventory: number | { id: number } } | [inventory: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { inventory: args }
     }
@@ -569,7 +569,7 @@ destroy.url = (args: { inventory: string | number | { id: string | number } } | 
  * @see app/Http/Controllers/SuperAdmin/InventoryController.php:69
  * @route '/super-admin/inventory/{inventory}'
  */
-destroy.delete = (args: { inventory: string | number | { id: string | number } } | [inventory: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
+destroy.delete = (args: { inventory: number | { id: number } } | [inventory: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
     url: destroy.url(args, options),
     method: 'delete',
 })
@@ -579,7 +579,7 @@ destroy.delete = (args: { inventory: string | number | { id: string | number } }
  * @see app/Http/Controllers/SuperAdmin/InventoryController.php:69
  * @route '/super-admin/inventory/{inventory}'
  */
-    const destroyForm = (args: { inventory: string | number | { id: string | number } } | [inventory: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    const destroyForm = (args: { inventory: number | { id: number } } | [inventory: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: destroy.url(args, {
                     [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                         _method: 'DELETE',
@@ -594,7 +594,7 @@ destroy.delete = (args: { inventory: string | number | { id: string | number } }
  * @see app/Http/Controllers/SuperAdmin/InventoryController.php:69
  * @route '/super-admin/inventory/{inventory}'
  */
-        destroyForm.delete = (args: { inventory: string | number | { id: string | number } } | [inventory: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        destroyForm.delete = (args: { inventory: number | { id: number } } | [inventory: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: destroy.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'DELETE',

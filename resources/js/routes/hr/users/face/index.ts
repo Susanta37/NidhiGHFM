@@ -4,7 +4,7 @@ import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFo
  * @see app/Http/Controllers/HR/HRFaceRecognitionController.php:27
  * @route '/hr/users/{user}/face-register'
  */
-export const register = (args: { user: string | number | { id: string | number } } | [user: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+export const register = (args: { user: number | { id: number } } | [user: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: register.url(args, options),
     method: 'post',
 })
@@ -19,7 +19,7 @@ register.definition = {
  * @see app/Http/Controllers/HR/HRFaceRecognitionController.php:27
  * @route '/hr/users/{user}/face-register'
  */
-register.url = (args: { user: string | number | { id: string | number } } | [user: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions) => {
+register.url = (args: { user: number | { id: number } } | [user: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { user: args }
     }
@@ -52,7 +52,7 @@ register.url = (args: { user: string | number | { id: string | number } } | [use
  * @see app/Http/Controllers/HR/HRFaceRecognitionController.php:27
  * @route '/hr/users/{user}/face-register'
  */
-register.post = (args: { user: string | number | { id: string | number } } | [user: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+register.post = (args: { user: number | { id: number } } | [user: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: register.url(args, options),
     method: 'post',
 })
@@ -62,7 +62,7 @@ register.post = (args: { user: string | number | { id: string | number } } | [us
  * @see app/Http/Controllers/HR/HRFaceRecognitionController.php:27
  * @route '/hr/users/{user}/face-register'
  */
-    const registerForm = (args: { user: string | number | { id: string | number } } | [user: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    const registerForm = (args: { user: number | { id: number } } | [user: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: register.url(args, options),
         method: 'post',
     })
@@ -72,7 +72,7 @@ register.post = (args: { user: string | number | { id: string | number } } | [us
  * @see app/Http/Controllers/HR/HRFaceRecognitionController.php:27
  * @route '/hr/users/{user}/face-register'
  */
-        registerForm.post = (args: { user: string | number | { id: string | number } } | [user: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        registerForm.post = (args: { user: number | { id: number } } | [user: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: register.url(args, options),
             method: 'post',
         })
