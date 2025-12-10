@@ -13,7 +13,7 @@ class ShiftAssignmentController extends Controller
 {
     public function index(Request $request)
     {
-        $query = ShiftAssignment::with(['shift', 'user']);
+        $query = ShiftAssignment::with(['shift.client', 'user']);
 
         if ($request->shift_id) {
             $query->where('shift_id', $request->shift_id);
@@ -31,8 +31,18 @@ class ShiftAssignmentController extends Controller
 
         return Inertia::render('SuperAdmin/ShiftAssignments/Index', [
             'assignments' => $assignments,
-            'shifts' => Shift::select('id', 'name')->get(),
-            'users' => User::select('id', 'name')->get(),
+            'shifts' => Shift::with('client:id,name')
+                ->select('id', 'name', 'client_id')
+                ->get()
+                ->map(fn($shift) => [
+                    'id' => $shift->id,
+                    'name' => $shift->name,
+                    'client_name' => $shift->client?->name,
+                    'display_name' => $shift->name . ' - ' . ($shift->client?->name ?? 'No Client')
+                ]),
+            'users' => User::where('role', 'fieldstaff')
+                ->select('id', 'name', 'role')
+                ->get(),
             'filters' => $request->only('shift_id', 'user_id', 'date'),
             'kpi' => [
                 'total' => ShiftAssignment::count(),
@@ -45,34 +55,65 @@ class ShiftAssignmentController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'shift_id' => 'required',
-            'user_id' => 'required',
+            'shift_id' => 'required|exists:shifts,id',
+            'user_id' => 'required|exists:users,id',
             'date' => 'required|date',
-            'status' => 'nullable|string',
+            'status' => 'nullable|string|in:assigned,confirmed,completed,cancelled',
         ]);
+
+        // Check if user has fieldstaff role
+        $user = User::findOrFail($data['user_id']);
+        if ($user->role !== 'fieldstaff') {
+            return back()->withErrors(['user_id' => 'Only field staff can be assigned to shifts.']);
+        }
+
+        // Check for duplicate assignment
+        $exists = ShiftAssignment::where('user_id', $data['user_id'])
+            ->where('date', $data['date'])
+            ->exists();
+
+        if ($exists) {
+            return back()->withErrors(['user_id' => 'This user is already assigned a shift on this date.']);
+        }
 
         ShiftAssignment::create($data);
 
-        return back()->with('success', 'Shift assigned.');
+        return back()->with('success', 'Shift assigned successfully.');
     }
 
-    public function update(Request $request, ShiftAssignment $shiftAssignment)
+    public function update(Request $request, ShiftAssignment $assignment)
     {
         $data = $request->validate([
-            'shift_id' => 'required',
-            'user_id' => 'required',
+            'shift_id' => 'required|exists:shifts,id',
+            'user_id' => 'required|exists:users,id',
             'date' => 'required|date',
-            'status' => 'nullable|string',
+            'status' => 'nullable|string|in:assigned,confirmed,completed,cancelled',
         ]);
 
-        $shiftAssignment->update($data);
+        // Check if user has fieldstaff role
+        $user = User::findOrFail($data['user_id']);
+        if ($user->role !== 'fieldstaff') {
+            return back()->withErrors(['user_id' => 'Only field staff can be assigned to shifts.']);
+        }
 
-        return back()->with('success', 'Updated.');
+        // Check for duplicate assignment (excluding current)
+        $exists = ShiftAssignment::where('user_id', $data['user_id'])
+            ->where('date', $data['date'])
+            ->where('id', '!=', $assignment->id)
+            ->exists();
+
+        if ($exists) {
+            return back()->withErrors(['user_id' => 'This user is already assigned a shift on this date.']);
+        }
+
+        $assignment->update($data);
+
+        return back()->with('success', 'Assignment updated successfully.');
     }
 
-    public function destroy(ShiftAssignment $shiftAssignment)
+    public function destroy(ShiftAssignment $assignment)
     {
-        $shiftAssignment->delete();
-        return back()->with('success', 'Deleted.');
+        $assignment->delete();
+        return back()->with('success', 'Assignment deleted successfully.');
     }
 }

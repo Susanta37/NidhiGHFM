@@ -61,8 +61,40 @@ export interface UserRecord {
     name: string;
     email: string;
     role: string;
-    profile?: Profile;
+
+    // Reporting Structure
+    reports_to?: number | null;
+    manager?: UserRecord | null; 
+    subordinates?: UserRecord[];
+
+    // Salary Fields
+    salary_type?:  "monthly" | "daily" | "hourly" | "" | null;
+    base_salary?: number | null;
+    per_day_rate?: number | null;
+    per_hour_rate?: number | null;
+    ot_rate?: number | null;
+
+    // Profile Relation
+    profile?: Profile | null;
+
+    // Documents Relation
+    documents?: UserDocument[];
 }
+
+export default function DocumentsModal({
+    show,
+    onClose,
+    userId,
+    existingDocs = [],
+    onSuccess,
+}: {
+    show: boolean;
+    onClose: () => void;
+    userId?: number;
+    existingDocs: UserDocument[];
+    onSuccess: () => void;
+})
+
 
 export interface FilterProps {
     search: string;
