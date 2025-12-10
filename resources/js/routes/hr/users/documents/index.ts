@@ -4,7 +4,7 @@ import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFo
  * @see app/Http/Controllers/HR/HRUserManagementController.php:202
  * @route '/hr/users/{user}/documents'
  */
-export const upload = (args: { user: number | { id: number } } | [user: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+export const upload = (args: { user: string | number | { id: string | number } } | [user: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: upload.url(args, options),
     method: 'post',
 })
@@ -19,7 +19,7 @@ upload.definition = {
  * @see app/Http/Controllers/HR/HRUserManagementController.php:202
  * @route '/hr/users/{user}/documents'
  */
-upload.url = (args: { user: number | { id: number } } | [user: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
+upload.url = (args: { user: string | number | { id: string | number } } | [user: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { user: args }
     }
@@ -52,7 +52,7 @@ upload.url = (args: { user: number | { id: number } } | [user: number | { id: nu
  * @see app/Http/Controllers/HR/HRUserManagementController.php:202
  * @route '/hr/users/{user}/documents'
  */
-upload.post = (args: { user: number | { id: number } } | [user: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+upload.post = (args: { user: string | number | { id: string | number } } | [user: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: upload.url(args, options),
     method: 'post',
 })
@@ -62,7 +62,7 @@ upload.post = (args: { user: number | { id: number } } | [user: number | { id: n
  * @see app/Http/Controllers/HR/HRUserManagementController.php:202
  * @route '/hr/users/{user}/documents'
  */
-    const uploadForm = (args: { user: number | { id: number } } | [user: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    const uploadForm = (args: { user: string | number | { id: string | number } } | [user: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: upload.url(args, options),
         method: 'post',
     })
@@ -72,7 +72,7 @@ upload.post = (args: { user: number | { id: number } } | [user: number | { id: n
  * @see app/Http/Controllers/HR/HRUserManagementController.php:202
  * @route '/hr/users/{user}/documents'
  */
-        uploadForm.post = (args: { user: number | { id: number } } | [user: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        uploadForm.post = (args: { user: string | number | { id: string | number } } | [user: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: upload.url(args, options),
             method: 'post',
         })

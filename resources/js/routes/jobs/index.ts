@@ -312,7 +312,7 @@ edit.head = (args: { job: string | number } | [job: string | number ] | string |
  * @see app/Http/Controllers/SuperAdmin/JobController.php:54
  * @route '/super-admin/jobs/{job}'
  */
-export const update = (args: { job: number | { id: number } } | [job: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
+export const update = (args: { job: string | number | { id: string | number } } | [job: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
     url: update.url(args, options),
     method: 'put',
 })
@@ -327,7 +327,7 @@ update.definition = {
  * @see app/Http/Controllers/SuperAdmin/JobController.php:54
  * @route '/super-admin/jobs/{job}'
  */
-update.url = (args: { job: number | { id: number } } | [job: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
+update.url = (args: { job: string | number | { id: string | number } } | [job: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { job: args }
     }
@@ -360,7 +360,7 @@ update.url = (args: { job: number | { id: number } } | [job: number | { id: numb
  * @see app/Http/Controllers/SuperAdmin/JobController.php:54
  * @route '/super-admin/jobs/{job}'
  */
-update.put = (args: { job: number | { id: number } } | [job: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
+update.put = (args: { job: string | number | { id: string | number } } | [job: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
     url: update.url(args, options),
     method: 'put',
 })
@@ -369,7 +369,7 @@ update.put = (args: { job: number | { id: number } } | [job: number | { id: numb
  * @see app/Http/Controllers/SuperAdmin/JobController.php:54
  * @route '/super-admin/jobs/{job}'
  */
-update.patch = (args: { job: number | { id: number } } | [job: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
+update.patch = (args: { job: string | number | { id: string | number } } | [job: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
     url: update.url(args, options),
     method: 'patch',
 })
@@ -379,7 +379,7 @@ update.patch = (args: { job: number | { id: number } } | [job: number | { id: nu
  * @see app/Http/Controllers/SuperAdmin/JobController.php:54
  * @route '/super-admin/jobs/{job}'
  */
-    const updateForm = (args: { job: number | { id: number } } | [job: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    const updateForm = (args: { job: string | number | { id: string | number } } | [job: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: update.url(args, {
                     [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                         _method: 'PUT',
@@ -394,7 +394,7 @@ update.patch = (args: { job: number | { id: number } } | [job: number | { id: nu
  * @see app/Http/Controllers/SuperAdmin/JobController.php:54
  * @route '/super-admin/jobs/{job}'
  */
-        updateForm.put = (args: { job: number | { id: number } } | [job: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        updateForm.put = (args: { job: string | number | { id: string | number } } | [job: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: update.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'PUT',
@@ -408,7 +408,7 @@ update.patch = (args: { job: number | { id: number } } | [job: number | { id: nu
  * @see app/Http/Controllers/SuperAdmin/JobController.php:54
  * @route '/super-admin/jobs/{job}'
  */
-        updateForm.patch = (args: { job: number | { id: number } } | [job: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        updateForm.patch = (args: { job: string | number | { id: string | number } } | [job: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: update.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'PATCH',
@@ -424,7 +424,7 @@ update.patch = (args: { job: number | { id: number } } | [job: number | { id: nu
  * @see app/Http/Controllers/SuperAdmin/JobController.php:69
  * @route '/super-admin/jobs/{job}'
  */
-export const destroy = (args: { job: number | { id: number } } | [job: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
+export const destroy = (args: { job: string | number | { id: string | number } } | [job: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
     url: destroy.url(args, options),
     method: 'delete',
 })
@@ -439,7 +439,7 @@ destroy.definition = {
  * @see app/Http/Controllers/SuperAdmin/JobController.php:69
  * @route '/super-admin/jobs/{job}'
  */
-destroy.url = (args: { job: number | { id: number } } | [job: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
+destroy.url = (args: { job: string | number | { id: string | number } } | [job: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { job: args }
     }
@@ -472,7 +472,7 @@ destroy.url = (args: { job: number | { id: number } } | [job: number | { id: num
  * @see app/Http/Controllers/SuperAdmin/JobController.php:69
  * @route '/super-admin/jobs/{job}'
  */
-destroy.delete = (args: { job: number | { id: number } } | [job: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
+destroy.delete = (args: { job: string | number | { id: string | number } } | [job: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
     url: destroy.url(args, options),
     method: 'delete',
 })
@@ -482,7 +482,7 @@ destroy.delete = (args: { job: number | { id: number } } | [job: number | { id: 
  * @see app/Http/Controllers/SuperAdmin/JobController.php:69
  * @route '/super-admin/jobs/{job}'
  */
-    const destroyForm = (args: { job: number | { id: number } } | [job: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    const destroyForm = (args: { job: string | number | { id: string | number } } | [job: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: destroy.url(args, {
                     [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                         _method: 'DELETE',
@@ -497,7 +497,7 @@ destroy.delete = (args: { job: number | { id: number } } | [job: number | { id: 
  * @see app/Http/Controllers/SuperAdmin/JobController.php:69
  * @route '/super-admin/jobs/{job}'
  */
-        destroyForm.delete = (args: { job: number | { id: number } } | [job: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        destroyForm.delete = (args: { job: string | number | { id: string | number } } | [job: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: destroy.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'DELETE',

@@ -59,7 +59,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
  * @see app/Http/Controllers/SuperAdmin/ShiftAssignmentController.php:84
  * @route '/super-admin/shifts/assignments/{assignment}'
  */
-export const update = (args: { assignment: number | { id: number } } | [assignment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
+export const update = (args: { assignment: string | number | { id: string | number } } | [assignment: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
     url: update.url(args, options),
     method: 'put',
 })
@@ -74,7 +74,7 @@ update.definition = {
  * @see app/Http/Controllers/SuperAdmin/ShiftAssignmentController.php:84
  * @route '/super-admin/shifts/assignments/{assignment}'
  */
-update.url = (args: { assignment: number | { id: number } } | [assignment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
+update.url = (args: { assignment: string | number | { id: string | number } } | [assignment: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { assignment: args }
     }
@@ -107,7 +107,7 @@ update.url = (args: { assignment: number | { id: number } } | [assignment: numbe
  * @see app/Http/Controllers/SuperAdmin/ShiftAssignmentController.php:84
  * @route '/super-admin/shifts/assignments/{assignment}'
  */
-update.put = (args: { assignment: number | { id: number } } | [assignment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
+update.put = (args: { assignment: string | number | { id: string | number } } | [assignment: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
     url: update.url(args, options),
     method: 'put',
 })
@@ -117,7 +117,7 @@ update.put = (args: { assignment: number | { id: number } } | [assignment: numbe
  * @see app/Http/Controllers/SuperAdmin/ShiftAssignmentController.php:84
  * @route '/super-admin/shifts/assignments/{assignment}'
  */
-    const updateForm = (args: { assignment: number | { id: number } } | [assignment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    const updateForm = (args: { assignment: string | number | { id: string | number } } | [assignment: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: update.url(args, {
                     [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                         _method: 'PUT',
@@ -132,7 +132,7 @@ update.put = (args: { assignment: number | { id: number } } | [assignment: numbe
  * @see app/Http/Controllers/SuperAdmin/ShiftAssignmentController.php:84
  * @route '/super-admin/shifts/assignments/{assignment}'
  */
-        updateForm.put = (args: { assignment: number | { id: number } } | [assignment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        updateForm.put = (args: { assignment: string | number | { id: string | number } } | [assignment: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: update.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'PUT',
@@ -148,7 +148,7 @@ update.put = (args: { assignment: number | { id: number } } | [assignment: numbe
  * @see app/Http/Controllers/SuperAdmin/ShiftAssignmentController.php:114
  * @route '/super-admin/shifts/assignments/{assignment}'
  */
-export const destroy = (args: { assignment: number | { id: number } } | [assignment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
+export const destroy = (args: { assignment: string | number | { id: string | number } } | [assignment: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
     url: destroy.url(args, options),
     method: 'delete',
 })
@@ -163,7 +163,7 @@ destroy.definition = {
  * @see app/Http/Controllers/SuperAdmin/ShiftAssignmentController.php:114
  * @route '/super-admin/shifts/assignments/{assignment}'
  */
-destroy.url = (args: { assignment: number | { id: number } } | [assignment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
+destroy.url = (args: { assignment: string | number | { id: string | number } } | [assignment: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { assignment: args }
     }
@@ -196,7 +196,7 @@ destroy.url = (args: { assignment: number | { id: number } } | [assignment: numb
  * @see app/Http/Controllers/SuperAdmin/ShiftAssignmentController.php:114
  * @route '/super-admin/shifts/assignments/{assignment}'
  */
-destroy.delete = (args: { assignment: number | { id: number } } | [assignment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
+destroy.delete = (args: { assignment: string | number | { id: string | number } } | [assignment: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
     url: destroy.url(args, options),
     method: 'delete',
 })
@@ -206,7 +206,7 @@ destroy.delete = (args: { assignment: number | { id: number } } | [assignment: n
  * @see app/Http/Controllers/SuperAdmin/ShiftAssignmentController.php:114
  * @route '/super-admin/shifts/assignments/{assignment}'
  */
-    const destroyForm = (args: { assignment: number | { id: number } } | [assignment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    const destroyForm = (args: { assignment: string | number | { id: string | number } } | [assignment: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: destroy.url(args, {
                     [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                         _method: 'DELETE',
@@ -221,7 +221,7 @@ destroy.delete = (args: { assignment: number | { id: number } } | [assignment: n
  * @see app/Http/Controllers/SuperAdmin/ShiftAssignmentController.php:114
  * @route '/super-admin/shifts/assignments/{assignment}'
  */
-        destroyForm.delete = (args: { assignment: number | { id: number } } | [assignment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        destroyForm.delete = (args: { assignment: string | number | { id: string | number } } | [assignment: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: destroy.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'DELETE',

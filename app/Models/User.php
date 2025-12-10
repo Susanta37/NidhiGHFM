@@ -25,6 +25,12 @@ class User extends Authenticatable
         'password',
         'role',
         'is_first_login',
+        'reports_to',
+        'salary_type',
+        'base_salary',
+        'per_day_rate',
+        'per_hour_rate',
+        'ot_rate',
     ];
 
     /**
@@ -59,6 +65,17 @@ class User extends Authenticatable
     public function face() { return $this->hasOne(UserFaceEmbedding::class); }
     public function attendances() { return $this->hasMany(Attendance::class); }
     public function rateCard() { return $this->hasOne(AttendanceRateCard::class); }
+    // Each user reports to someone
+    public function manager()
+    {
+        return $this->belongsTo(User::class, 'reports_to');
+    }
+
+    // A manager has many subordinates
+    public function subordinates()
+    {
+        return $this->hasMany(User::class, 'reports_to');
+    }
 
 
 

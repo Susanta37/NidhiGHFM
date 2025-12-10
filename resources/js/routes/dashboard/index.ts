@@ -476,8 +476,4 @@ accountant: Object.assign(accountant, accountant),
 fieldstaff: Object.assign(fieldstaff, fieldstaff),
 }
 
-export default dashboardt: Object.assign(accountant, accountant),
-fieldstaff: Object.assign(fieldstaff, fieldstaff),
-}
-
 export default dashboard
