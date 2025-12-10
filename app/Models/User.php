@@ -60,4 +60,11 @@ class User extends Authenticatable
     public function attendances() { return $this->hasMany(Attendance::class); }
     public function rateCard() { return $this->hasOne(AttendanceRateCard::class); }
 
+
+
+    public function shiftAssignments()
+{
+    return $this->hasMany(ShiftAssignment::class, 'user_id');
+}
+
 }
