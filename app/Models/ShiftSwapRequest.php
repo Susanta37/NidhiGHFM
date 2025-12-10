@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\User;              // Add this
+use App\Models\ShiftAssignment;   // Add this (for assignment relationship)
 
 class ShiftSwapRequest extends Model
 {
@@ -12,15 +14,19 @@ class ShiftSwapRequest extends Model
         'shift_assignment_id',
         'status',
     ];
-    public function fromUser() {
-    return $this->belongsTo(User::class, 'from_user_id');
-}
-public function toUser() {
-    return $this->belongsTo(User::class, 'to_user_id');
-}
-public function assignment() {
-    return $this->belongsTo(ShiftAssignment::class, 'shift_assignment_id');
-}
 
-}
+    public function fromUser()
+    {
+        return $this->belongsTo(User::class, 'from_user_id');
+    }
 
+    public function toUser()
+    {
+        return $this->belongsTo(User::class, 'to_user_id');
+    }
+
+    public function assignment()
+    {
+        return $this->belongsTo(ShiftAssignment::class, 'shift_assignment_id');
+    }
+}

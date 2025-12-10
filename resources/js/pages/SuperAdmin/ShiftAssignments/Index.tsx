@@ -1,13 +1,10 @@
 "use client";
-
 import AppLayout from "@/layouts/app-layout";
 import { Head, router } from "@inertiajs/react";
 import { useState } from "react";
-
 import KpiCard from "@/components/KpiCard";
 import DynamicFilterBar from "@/components/DynamicFilterBar";
 import Modal from "@/components/Modal";
-
 import {
   Table,
   TableHeader,
@@ -16,7 +13,6 @@ import {
   TableHead,
   TableCell,
 } from "@/components/ui/table";
-
 import {
   Pagination,
   PaginationContent,
@@ -25,36 +21,74 @@ import {
   PaginationPrevious,
   PaginationNext,
 } from "@/components/ui/pagination";
-
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-
 import { Calendar, Plus, Edit3, Trash2 } from "lucide-react";
 
-/**
- * Expects:
- * assignments (paginated) with relations shift, user
- * shifts list, users list, filters, kpi
- */
+interface Shift {
+  id: number;
+  name: string;
+  client_name: string;
+  display_name: string;
+}
+
+interface User {
+  id: number;
+  name: string;
+  role: string;
+}
+
+interface Assignment {
+  id: number;
+  shift_id: number;
+  user_id: number;
+  date: string;
+  status: string;
+  shift?: {
+    name: string;
+    client?: {
+      name: string;
+    };
+  };
+  user?: {
+    name: string;
+  };
+}
+
 interface Props {
-  assignments: any;
-  shifts: any[];
-  users: any[];
+  assignments: {
+    data: Assignment[];
+    current_page: number;
+    last_page: number;
+    prev_page_url: string | null;
+    next_page_url: string | null;
+  };
+  shifts: Shift[];
+  users: User[];
   filters: any;
   kpi: {
     total: number;
     today: number;
     distinctUsers: number;
   };
+  errors?: any;
 }
+
 const breadcrumbs = [
-  { title: "Shift Assignments", href: "/super-admin/shift-assignments" },
+  { title: "Shift Assignments", href: "/super-admin/shifts/assignments" },
 ];
 
-export default function ShiftAssignmentsIndex({ assignments, shifts = [], users = [], filters, kpi }: Props) {
+export default function ShiftAssignmentsIndex({
+  assignments,
+  shifts = [],
+  users = [],
+  filters,
+  kpi,
+  errors = {}
+}: Props) {
   const [showAssign, setShowAssign] = useState(false);
-  const [editing, setEditing] = useState<any | null>(null);
-  const [deleting, setDeleting] = useState<any | null>(null);
+  const [editing, setEditing] = useState<Assignment | null>(null);
+  const [deleting, setDeleting] = useState<Assignment | null>(null);
 
   const [filterValues, setFilterValues] = useState({
     shift_id: filters.shift_id || "",
@@ -72,186 +106,438 @@ export default function ShiftAssignmentsIndex({ assignments, shifts = [], users 
   const handleFilter = (key: string, value: string) => {
     const next = { ...filterValues, [key]: value };
     setFilterValues(next);
-    router.get("/super-admin/shift-assignments", next, { preserveScroll: true });
+    router.get("/super-admin/shifts/assignments", next, {
+      preserveScroll: true,
+    });
+  };
+
+  const handleAssignSubmit = () => {
+    router.post("/super-admin/shifts/assignments", assignForm, {
+      onSuccess: () => {
+        setShowAssign(false);
+        setAssignForm({
+          shift_id: "",
+          user_id: "",
+          date: "",
+          status: "assigned",
+        });
+      },
+    });
+  };
+
+  const handleEditSubmit = () => {
+    if (!editing) return;
+
+    router.put(
+      `/super-admin/shifts/assignments/${editing.id}`,
+      {
+        shift_id: editing.shift_id,
+        user_id: editing.user_id,
+        date: editing.date,
+        status: editing.status,
+      },
+      {
+        onSuccess: () => setEditing(null),
+      }
+    );
+  };
+
+  const handleDelete = () => {
+    if (!deleting) return;
+
+    router.delete(`/super-admin/shifts/assignments/${deleting.id}`, {
+      onSuccess: () => setDeleting(null),
+    });
+  };
+
+  const getShiftDisplay = (assignment: Assignment) => {
+    if (assignment.shift?.client?.name) {
+      return `${assignment.shift.name} - ${assignment.shift.client.name}`;
+    }
+    return assignment.shift?.name ?? "—";
   };
 
   return (
-    <AppLayout breadcrumbs={breadcrumbs} >
-      <Head title="Shift Assignments" />
-      <div className="p-6 min-h-screen bg-neutral-50 dark:bg-neutral-950">
-
-        <div className="grid md:grid-cols-3 gap-6 mb-8">
-          <KpiCard title="Total Assignments" value={kpi.total} icon={Calendar} bgColorClass="bg-blue-500/10 dark:bg-blue-900/20 border-blue-500/50"
-                // Icon: Solid blue
-                iconColorClass="text-blue-600 dark:text-blue-400"
-                // Hover: Smooth blue gradient
-                color="from-blue-500 to-sky-600" />
-          <KpiCard title="Today's Assignments" value={kpi.today} icon={Plus} bgColorClass="bg-green-500/10 dark:bg-green-900/20 border-green-500/50"
-                // Icon: Solid green
-                iconColorClass="text-green-600 dark:text-green-400"
-                // Hover: Smooth green gradient
-                color="from-green-500 to-emerald-600" />
-          <KpiCard title="Distinct Users" value={kpi.distinctUsers} icon={Edit3} bgColorClass="bg-purple-500/10 dark:bg-purple-900/20 border-purple-500/50"
-                // Icon: Solid purple
-                iconColorClass="text-purple-600 dark:text-purple-400"
-                // Hover: Smooth purple gradient
-                color="from-purple-500 to-indigo-600" />
+    <AppLayout
+      title="Shift Assignments"
+      breadcrumbs={breadcrumbs}
+      renderHeader={() => (
+        <div className="flex items-center justify-between">
+          <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">
+            Shift Assignments
+          </h2>
         </div>
+      )}
+    >
+      <Head title="Shift Assignments" />
 
-        <DynamicFilterBar
-          filters={[
-            { key: "shift_id", label: "Shift", type: "select", options: [{ label: "All", value: "" }, ...shifts.map(s => ({ label: s.name, value: s.id }))] },
-            { key: "user_id", label: "User", type: "select", options: [{ label: "All", value: "" }, ...users.map(u => ({ label: u.name, value: u.id }))] },
-            { key: "date", label: "Date", type: "date" },
-          ]}
-          values={filterValues}
-          onChange={handleFilter}
-          actionSlot={<>
-           <div className="flex gap-6 align-items:center justify-center">
-             <Button className="bg-blue-600 text-white" onClick={() => router.get("/super-admin/shift-assignments")}>
-              Reset Filters
-            </Button>
-            <Button className="bg-blue-600 text-white" onClick={() => setShowAssign(true)}>
-            <Plus className="w-4 h-4 mr-1" /> Assign Shift
-          </Button>
-           </div>
-            </>
-          }
-        />
+      <div className="py-8">
+        <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <KpiCard
+              title="Total Assignments"
+              value={kpi.total}
+              icon={Calendar}
+            />
+            <KpiCard
+              title="Today's Assignments"
+              value={kpi.today}
+              icon={Calendar}
+            />
+            <KpiCard
+              title="Assigned Users"
+              value={kpi.distinctUsers}
+              icon={Calendar}
+            />
+          </div>
 
-        <div className="bg-white dark:bg-neutral-900 p-6 rounded-xl border mt-6 dark:border-neutral-800">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>#</TableHead>
-                <TableHead>User</TableHead>
-                <TableHead>Shift</TableHead>
-                <TableHead>Date</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
-              </TableRow>
-            </TableHeader>
+          <DynamicFilterBar
+            filters={[
+              {
+                key: "shift_id",
+                label: "Shift",
+                type: "select",
+                options: [
+                  { label: "All Shifts", value: "" },
+                  ...shifts.map((s) => ({
+                    label: s.display_name,
+                    value: s.id,
+                  })),
+                ],
+              },
+              {
+                key: "user_id",
+                label: "User",
+                type: "select",
+                options: [
+                  { label: "All Users", value: "" },
+                  ...users.map((u) => ({
+                    label: `${u.name} (${u.role})`,
+                    value: u.id,
+                  })),
+                ],
+              },
+              { key: "date", label: "Date", type: "date" },
+            ]}
+            values={filterValues}
+            onChange={handleFilter}
+            actionSlot={
+              <>
+                <Button
+                  variant="outline"
+                  onClick={() => router.get("/super-admin/shifts/assignments")}
+                >
+                  Reset Filters
+                </Button>
+                <Button className="bg-blue-600 text-white" onClick={() => setShowAssign(true)}>
+                  <Plus className="w-4 h-4 mr-1" />
+                  Assign Shift
+                </Button>
+              </>
+            }
+          />
 
-            <TableBody>
-              {assignments.data.map((a: any, idx: number) => (
-                <TableRow key={a.id}>
-                  <TableCell>{idx + 1}</TableCell>
-                  <TableCell>{a.user?.name ?? "—"}</TableCell>
-                  <TableCell>{a.shift?.name ?? "—"}</TableCell>
-                  <TableCell>{a.date}</TableCell>
-                  <TableCell>{a.status}</TableCell>
-                  <TableCell className="text-right flex justify-end gap-3">
-                    <button onClick={() => setEditing(a)} className="text-blue-600 hover:underline flex items-center gap-1"><Edit3 className="h-4 w-4" /> Edit</button>
-                    <button onClick={() => setDeleting(a)} className="text-red-600 hover:underline flex items-center gap-1"><Trash2 className="h-4 w-4" /> Delete</button>
-                  </TableCell>
+          <div className="mt-6 bg-white dark:bg-gray-800 shadow rounded-lg overflow-hidden">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>#</TableHead>
+                  <TableHead>User</TableHead>
+                  <TableHead>Shift</TableHead>
+                  <TableHead>Date</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Actions</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+              </TableHeader>
+              <TableBody>
+                {assignments.data.map((a, idx) => (
+                  <TableRow key={a.id}>
+                    <TableCell>{idx + 1}</TableCell>
+                    <TableCell>{a.user?.name ?? "—"}</TableCell>
+                    <TableCell>{getShiftDisplay(a)}</TableCell>
+                    <TableCell>{a.date}</TableCell>
+                    <TableCell>
+                      <span
+                        className={`px-2 py-1 rounded text-xs ${
+                          a.status === "confirmed"
+                            ? "bg-green-100 text-green-800"
+                            : a.status === "completed"
+                            ? "bg-blue-100 text-blue-800"
+                            : a.status === "cancelled"
+                            ? "bg-red-100 text-red-800"
+                            : "bg-gray-100 text-gray-800"
+                        }`}
+                      >
+                        {a.status}
+                      </span>
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => setEditing(a)}
+                          className="text-blue-600 hover:underline flex items-center gap-1"
+                        >
+                          <Edit3 className="w-4 h-4" />
+                          Edit
+                        </button>
+                        <button
+                          onClick={() => setDeleting(a)}
+                          className="text-red-600 hover:underline flex items-center gap-1"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                          Delete
+                        </button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
 
-          {/* Pagination */}
-          <div className="mt-6 flex justify-center">
-            <Pagination>
+            {/* Pagination */}
+            <Pagination className="my-4">
               <PaginationContent>
                 <PaginationItem>
-                  <PaginationPrevious href="#" onClick={(e) => { e.preventDefault(); if (assignments.prev_page_url) router.get(assignments.prev_page_url); }} />
+                  <PaginationPrevious
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      if (assignments.prev_page_url)
+                        router.get(assignments.prev_page_url);
+                    }}
+                  />
                 </PaginationItem>
-
-                {Array.from({ length: assignments.last_page || 1 }, (_, i) => i + 1).map(page => (
+                {Array.from(
+                  { length: assignments.last_page || 1 },
+                  (_, i) => i + 1
+                ).map((page) => (
                   <PaginationItem key={page}>
-                    <PaginationLink isActive={page === assignments.current_page}>
-                      <a href={`?page=${page}`} onClick={(e) => { e.preventDefault(); router.get(`/super-admin/shift-assignments?page=${page}`); }}>{page}</a>
+                    <PaginationLink
+                      href="#"
+                      isActive={page === assignments.current_page}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        router.get(
+                          `/super-admin/shifts/assignments?page=${page}`
+                        );
+                      }}
+                    >
+                      {page}
                     </PaginationLink>
                   </PaginationItem>
                 ))}
-
                 <PaginationItem>
-                  <PaginationNext href="#" onClick={(e) => { e.preventDefault(); if (assignments.next_page_url) router.get(assignments.next_page_url); }} />
+                  <PaginationNext
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      if (assignments.next_page_url)
+                        router.get(assignments.next_page_url);
+                    }}
+                  />
                 </PaginationItem>
               </PaginationContent>
             </Pagination>
           </div>
         </div>
-
-        {/* ASSIGN MODAL */}
-        {showAssign && (
-          <Modal show={showAssign} onClose={() => setShowAssign(false)} title="Assign Shift">
-            <div className="grid gap-3">
-              <select className="border rounded p-2" value={assignForm.shift_id} onChange={(e) => setAssignForm({ ...assignForm, shift_id: e.target.value })}>
-                <option value="">Select Shift</option>
-                {shifts.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
-              </select>
-
-              <select className="border rounded p-2" value={assignForm.user_id} onChange={(e) => setAssignForm({ ...assignForm, user_id: e.target.value })}>
-                <option value="">Select User</option>
-                {users.map(u => <option key={u.id} value={u.id}>{u.name}</option>)}
-              </select>
-
-              <Input type="date" value={assignForm.date} onChange={(e) => setAssignForm({ ...assignForm, date: e.target.value })} />
-              <select className="border rounded p-2" value={assignForm.status} onChange={(e) => setAssignForm({ ...assignForm, status: e.target.value })}>
-                <option value="assigned">Assigned</option>
-                <option value="confirmed">Confirmed</option>
-              </select>
-
-              <div className="flex justify-end gap-2">
-                <Button variant="outline" onClick={() => setShowAssign(false)}>Cancel</Button>
-                <Button className="bg-blue-600 text-white" onClick={() => {
-                  router.post("/super-admin/shift-assignments", assignForm, {
-                    onSuccess: () => { setShowAssign(false); setAssignForm({ shift_id: "", user_id: "", date: "", status: "assigned" }); }
-                  });
-                }}>Assign</Button>
-              </div>
-            </div>
-          </Modal>
-        )}
-
-        {/* EDIT ASSIGNMENT */}
-        {editing && (
-          <Modal show={!!editing} onClose={() => setEditing(null)} title="Edit Assignment">
-            <div className="grid gap-3">
-              <select className="border rounded p-2" value={editing.shift_id} onChange={(e) => setEditing({ ...editing, shift_id: e.target.value })}>
-                {shifts.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
-              </select>
-
-              <select className="border rounded p-2" value={editing.user_id} onChange={(e) => setEditing({ ...editing, user_id: e.target.value })}>
-                {users.map(u => <option key={u.id} value={u.id}>{u.name}</option>)}
-              </select>
-
-              <Input type="date" value={editing.date} onChange={(e) => setEditing({ ...editing, date: e.target.value })} />
-              <select className="border rounded p-2" value={editing.status} onChange={(e) => setEditing({ ...editing, status: e.target.value })}>
-                <option value="assigned">Assigned</option>
-                <option value="confirmed">Confirmed</option>
-              </select>
-
-              <div className="flex justify-end gap-2">
-                <Button variant="outline" onClick={() => setEditing(null)}>Cancel</Button>
-                <Button className="bg-blue-600 text-white" onClick={() =>
-                  router.put(`/super-admin/shift-assignments/${editing.id}`, {
-                    shift_id: editing.shift_id,
-                    user_id: editing.user_id,
-                    date: editing.date,
-                    status: editing.status
-                  }, { onSuccess: () => setEditing(null) })
-                }>Save</Button>
-              </div>
-            </div>
-          </Modal>
-        )}
-
-        {/* DELETE */}
-        {deleting && (
-          <Modal show={!!deleting} onClose={() => setDeleting(null)} title="Delete Assignment">
-            <div>
-              <p className="mb-4">Delete assignment for <strong>{deleting.user?.name}</strong> on <strong>{deleting.date}</strong>?</p>
-              <div className="flex justify-end gap-2">
-                <Button variant="outline" onClick={() => setDeleting(null)}>Cancel</Button>
-                <Button className="bg-red-600 text-white" onClick={() => router.delete(`/super-admin/shift-assignments/${deleting.id}`, { onSuccess: () => setDeleting(null) })}>Delete</Button>
-              </div>
-            </div>
-          </Modal>
-        )}
-
       </div>
+
+      {/* ASSIGN MODAL */}
+      {showAssign && (
+        <Modal
+          show={showAssign}
+          onClose={() => setShowAssign(false)}
+          title="Assign Shift"
+        >
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium mb-1">Shift</label>
+              <select
+                className="w-full border rounded px-3 py-2"
+                value={assignForm.shift_id}
+                onChange={(e) =>
+                  setAssignForm({ ...assignForm, shift_id: e.target.value })
+                }
+              >
+                <option value="">Select Shift</option>
+                {shifts.map((s) => (
+                  <option key={s.id} value={s.id}>
+                    {s.display_name}
+                  </option>
+                ))}
+              </select>
+              {errors.shift_id && (
+                <p className="text-red-500 text-sm mt-1">{errors.shift_id}</p>
+              )}
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-1">
+                Field Staff
+              </label>
+              <select
+                className="w-full border rounded px-3 py-2"
+                value={assignForm.user_id}
+                onChange={(e) =>
+                  setAssignForm({ ...assignForm, user_id: e.target.value })
+                }
+              >
+                <option value="">Select Field Staff</option>
+                {users.map((u) => (
+                  <option key={u.id} value={u.id}>
+                    {u.name}
+                  </option>
+                ))}
+              </select>
+              {errors.user_id && (
+                <p className="text-red-500 text-sm mt-1">{errors.user_id}</p>
+              )}
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-1">Date</label>
+              <Input
+                type="date"
+                value={assignForm.date}
+                onChange={(e) =>
+                  setAssignForm({ ...assignForm, date: e.target.value })
+                }
+              />
+              {errors.date && (
+                <p className="text-red-500 text-sm mt-1">{errors.date}</p>
+              )}
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-1">Status</label>
+              <select
+                className="w-full border rounded px-3 py-2"
+                value={assignForm.status}
+                onChange={(e) =>
+                  setAssignForm({ ...assignForm, status: e.target.value })
+                }
+              >
+                <option value="assigned">Assigned</option>
+                <option value="confirmed">Confirmed</option>
+                <option value="completed">Completed</option>
+                <option value="cancelled">Cancelled</option>
+              </select>
+            </div>
+
+            <div className="flex justify-end gap-2 mt-4">
+              <Button variant="outline" onClick={() => setShowAssign(false)}>
+                Cancel
+              </Button>
+              <Button onClick={handleAssignSubmit}>Assign</Button>
+            </div>
+          </div>
+        </Modal>
+      )}
+
+      {/* EDIT ASSIGNMENT */}
+      {editing && (
+        <Modal
+          show={!!editing}
+          onClose={() => setEditing(null)}
+          title="Edit Assignment"
+        >
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium mb-1">Shift</label>
+              <select
+                className="w-full border rounded px-3 py-2"
+                value={editing.shift_id}
+                onChange={(e) =>
+                  setEditing({ ...editing, shift_id: Number(e.target.value) })
+                }
+              >
+                {shifts.map((s) => (
+                  <option key={s.id} value={s.id}>
+                    {s.display_name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-1">
+                Field Staff
+              </label>
+              <select
+                className="w-full border rounded px-3 py-2"
+                value={editing.user_id}
+                onChange={(e) =>
+                  setEditing({ ...editing, user_id: Number(e.target.value) })
+                }
+              >
+                {users.map((u) => (
+                  <option key={u.id} value={u.id}>
+                    {u.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-1">Date</label>
+              <Input
+                type="date"
+                value={editing.date}
+                onChange={(e) =>
+                  setEditing({ ...editing, date: e.target.value })
+                }
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-1">Status</label>
+              <select
+                className="w-full border rounded px-3 py-2"
+                value={editing.status}
+                onChange={(e) =>
+                  setEditing({ ...editing, status: e.target.value })
+                }
+              >
+                <option value="assigned">Assigned</option>
+                <option value="confirmed">Confirmed</option>
+                <option value="completed">Completed</option>
+                <option value="cancelled">Cancelled</option>
+              </select>
+            </div>
+
+            <div className="flex justify-end gap-2 mt-4">
+              <Button variant="outline" onClick={() => setEditing(null)}>
+                Cancel
+              </Button>
+              <Button onClick={handleEditSubmit}>Save</Button>
+            </div>
+          </div>
+        </Modal>
+      )}
+
+      {/* DELETE */}
+      {deleting && (
+        <Modal
+          show={!!deleting}
+          onClose={() => setDeleting(null)}
+          title="Delete Assignment"
+        >
+          <div className="space-y-4">
+            <p>
+              Delete assignment for <strong>{deleting.user?.name}</strong> on{" "}
+              <strong>{deleting.date}</strong>?
+            </p>
+            <div className="flex justify-end gap-2 mt-4">
+              <Button variant="outline" onClick={() => setDeleting(null)}>
+                Cancel
+              </Button>
+              <Button variant="destructive" onClick={handleDelete}>
+                Delete
+              </Button>
+            </div>
+          </div>
+        </Modal>
+      )}
     </AppLayout>
   );
 }
