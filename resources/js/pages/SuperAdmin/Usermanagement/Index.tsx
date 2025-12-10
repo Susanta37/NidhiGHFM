@@ -126,20 +126,27 @@ export default function Index({ auth, users, kpi }: Props) {
     blood_group: "",
   });
 
-  const editForm = useForm({
-    name: "",
-    email: "",
-    role: "",
-    address: "",
-    emergency_contact: "",
-    dob: "",
-    bank_account_no: "",
-    ifsc: "",
-    pan_no: "",
-    aadhaar_no: "",
-    joining_date: "",
-    blood_group: "",
-  });
+ const editForm = useForm({
+  name: "",
+  email: "",
+  role: "",
+  address: "",
+  emergency_contact: "",
+  dob: "",
+  bank_account_no: "",
+  ifsc: "",
+  pan_no: "",
+  aadhaar_no: "",
+  joining_date: "",
+  blood_group: "",
+  reports_to: "",
+  salary_type: "",
+  base_salary: "",
+  per_day_rate: "",
+  per_hour_rate: "",
+  ot_rate: "",
+});
+
 
   const uploadForm = useForm({
     documents: [] as File[],
@@ -153,19 +160,28 @@ export default function Index({ auth, users, kpi }: Props) {
     setSelectedUser(user);
 
     editForm.setData({
-      name: user.name ?? "",
-      email: user.email ?? "",
-      role: user.role ?? "",
-      address: user.profile?.address || "",
-      emergency_contact: user.profile?.emergency_contact || "",
-      dob: user.profile?.dob || "",
-      bank_account_no: user.profile?.bank_account_no || "",
-      ifsc: user.profile?.ifsc || "",
-      pan_no: user.profile?.pan_no || "",
-      aadhaar_no: user.profile?.aadhaar_no || "",
-      joining_date: user.profile?.joining_date || "",
-      blood_group: user.profile?.blood_group || "",
-    });
+  name: user.name ?? "",
+  email: user.email ?? "",
+  role: user.role ?? "",
+
+  address: user.profile?.address || "",
+  emergency_contact: user.profile?.emergency_contact || "",
+  dob: user.profile?.dob || "",
+  bank_account_no: user.profile?.bank_account_no || "",
+  ifsc: user.profile?.ifsc || "",
+  pan_no: user.profile?.pan_no || "",
+  aadhaar_no: user.profile?.aadhaar_no || "",
+  joining_date: user.profile?.joining_date || "",
+  blood_group: user.profile?.blood_group || "",
+
+  reports_to: user.reports_to || "",
+  salary_type: user.salary_type || "",
+  base_salary: user.base_salary || "",
+  per_day_rate: user.per_day_rate || "",
+  per_hour_rate: user.per_hour_rate || "",
+  ot_rate: user.ot_rate || "",
+});
+
 
     setShowEdit(true);
   };
@@ -249,6 +265,8 @@ export default function Index({ auth, users, kpi }: Props) {
   const gotoPage = (n: number) => {
     setCurrentPage(Math.max(1, Math.min(n, totalPages)));
   };
+
+  
 
   /* ===================================================================
      UI
@@ -467,147 +485,247 @@ export default function Index({ auth, users, kpi }: Props) {
       {/* ===================================================================
          CREATE MODAL
       =================================================================== */}
-      <Modal show={showCreate} onClose={() => setShowCreate(false)}>
-        <h2 className="text-xl font-semibold mb-4 text-neutral-900 dark:text-white">Add New User</h2>
-
-        <form
-          onSubmit={(e) => {
+     <Modal show={showCreate} onClose={() => setShowCreate(false)} title="Add New User">
+    <form
+        onSubmit={(e) => {
             e.preventDefault();
             createForm.post("/super-admin/users", {
-              onSuccess: () => {
-                setShowCreate(false);
-                createForm.reset();
-              },
+                onSuccess: () => {
+                    setShowCreate(false);
+                    createForm.reset();
+                },
             });
-          }}
-          className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-[repeat(auto-fit,minmax(220px,1fr))]"
-        >
-          {/* Name */}
-          <div>
+        }}
+        className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-[repeat(auto-fit,minmax(220px,1fr))]"
+    >
+        {/* -------------------------- BASIC INFO -------------------------- */}
+        {/* Name */}
+        <div>
             <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
-              Name <span className="text-red-500">*</span>
+                Name <span className="text-red-500">*</span>
             </label>
             <input
-              type="text"
-              placeholder="Enter full name"
-              className="border border-neutral-300 dark:border-neutral-600 dark:bg-neutral-800 dark:text-white px-3 py-2 rounded-lg w-full"
-              value={createForm.data.name}
-              onChange={(e) => createForm.setData("name", e.target.value)}
+                type="text"
+                placeholder="Enter full name"
+                className="border border-neutral-300 dark:border-neutral-600 dark:bg-neutral-800 dark:text-white px-3 py-2 rounded-lg w-full"
+                value={createForm.data.name}
+                onChange={(e) => createForm.setData("name", e.target.value)}
             />
-            {createForm.errors.name && (
-              <p className="text-red-500 text-sm mt-1">{createForm.errors.name}</p>
-            )}
-          </div>
+            {createForm.errors.name && <p className="text-red-500 text-sm mt-1">{createForm.errors.name}</p>}
+        </div>
 
-          {/* Email */}
-          <div>
+        {/* Email */}
+        <div>
             <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
-              Email <span className="text-red-500">*</span>
+                Email <span className="text-red-500">*</span>
             </label>
             <input
-              type="email"
-              placeholder="Enter email address"
-              className="border border-neutral-300 dark:border-neutral-600 dark:bg-neutral-800 dark:text-white px-3 py-2 rounded-lg w-full"
-              value={createForm.data.email}
-              onChange={(e) => createForm.setData("email", e.target.value)}
+                type="email"
+                placeholder="Enter email address"
+                className="border border-neutral-300 dark:border-neutral-600 dark:bg-neutral-800 dark:text-white px-3 py-2 rounded-lg w-full"
+                value={createForm.data.email}
+                onChange={(e) => createForm.setData("email", e.target.value)}
             />
-            {createForm.errors.email && (
-              <p className="text-red-500 text-sm mt-1">{createForm.errors.email}</p>
-            )}
-          </div>
+            {createForm.errors.email && <p className="text-red-500 text-sm mt-1">{createForm.errors.email}</p>}
+        </div>
 
-          {/* Password */}
-          <div>
+        {/* Password */}
+        <div>
             <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
-              Password <span className="text-red-500">*</span>
+                Password <span className="text-red-500">*</span>
             </label>
             <input
-              type="password"
-              placeholder="Enter password"
-              className="border border-neutral-300 dark:border-neutral-600 dark:bg-neutral-800 dark:text-white px-3 py-2 rounded-lg w-full"
-              value={createForm.data.password}
-              onChange={(e) => createForm.setData("password", e.target.value)}
+                type="password"
+                placeholder="Enter password"
+                className="border border-neutral-300 dark:border-neutral-600 dark:bg-neutral-800 dark:text-white px-3 py-2 rounded-lg w-full"
+                value={createForm.data.password}
+                onChange={(e) => createForm.setData("password", e.target.value)}
             />
-            {createForm.errors.password && (
-              <p className="text-red-500 text-sm mt-1">{createForm.errors.password}</p>
-            )}
-          </div>
+            {createForm.errors.password && <p className="text-red-500 text-sm mt-1">{createForm.errors.password}</p>}
+        </div>
 
-          {/* Role */}
-          <div>
+        {/* Role */}
+        <div>
             <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
-              Role <span className="text-red-500">*</span>
+                Role <span className="text-red-500">*</span>
             </label>
             <select
-              className="border border-neutral-300 dark:border-neutral-600 dark:bg-neutral-800 dark:text-white px-3 py-2 rounded-lg w-full"
-              value={createForm.data.role}
-              onChange={(e) => createForm.setData("role", e.target.value)}
+                className="border border-neutral-300 dark:border-neutral-600 dark:bg-neutral-800 dark:text-white px-3 py-2 rounded-lg w-full"
+                value={createForm.data.role}
+                onChange={(e) => createForm.setData("role", e.target.value)}
             >
-              <option value="">Select Role</option>
-              <option value="hr">HR</option>
-              <option value="supervisor">Supervisor</option>
-              <option value="sitemanager">Site Manager</option>
-              <option value="accountant">Accountant</option>
-              <option value="fieldstaff">Field Staff</option>
+                <option value="">Select Role</option>
+                <option value="hr">HR</option>
+                <option value="supervisor">Supervisor</option>
+                <option value="sitemanager">Site Manager</option>
+                <option value="accountant">Accountant</option>
+                <option value="fieldstaff">Field Staff</option>
             </select>
-            {createForm.errors.role && (
-              <p className="text-red-500 text-sm mt-1">{createForm.errors.role}</p>
-            )}
-          </div>
+            {createForm.errors.role && <p className="text-red-500 text-sm mt-1">{createForm.errors.role}</p>}
+        </div>
 
-          {/* Joining Date */}
-          <div>
+        {/* Reports To */}
+        <div>
             <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
-              Joining Date
-            </label>
-            <input
-              type="date"
-              className="border border-neutral-300 dark:border-neutral-600 dark:bg-neutral-800 dark:text-white px-3 py-2 rounded-lg w-full"
-              value={createForm.data.joining_date}
-              onChange={(e) => createForm.setData("joining_date", e.target.value)}
-            />
-          </div>
-
-          {/* Blood Group */}
-          <div>
-            <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
-              Blood Group
+                Reports To
             </label>
             <select
-              className="border border-neutral-300 dark:border-neutral-600 dark:bg-neutral-800 dark:text-white px-3 py-2 rounded-lg w-full"
-              value={createForm.data.blood_group}
-              onChange={(e) => createForm.setData("blood_group", e.target.value)}
+                className="border border-neutral-300 dark:border-neutral-600 dark:bg-neutral-800 dark:text-white px-3 py-2 rounded-lg w-full"
+                value={createForm.data.reports_to ?? ""}
+                onChange={(e) => createForm.setData("reports_to", e.target.value)}
             >
-              <option value="">Select Blood Group</option>
-              {bloodGroups.map((bg) => (
-                <option key={bg} value={bg}>{bg}</option>
-              ))}
+                <option value="">Select Manager</option>
+                {users
+                    ?.filter((u) => ["hr", "supervisor", "sitemanager"].includes(u.role))
+                    .map((u) => (
+                        <option key={u.id} value={u.id}>
+                            {u.name} — {u.role}
+                        </option>
+                    ))}
             </select>
-          </div>
+        </div>
 
-          <div className="flex gap-2 justify-start mt-6">
-            <button
-              type="button"
-              onClick={() => setShowCreate(false)}
-              className="px-4 py-2 rounded-lg border border-neutral-300 dark:border-neutral-600 text-neutral-700 dark:text-neutral-300"
+        {/* Joining Date */}
+        <div>
+            <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
+                Joining Date
+            </label>
+            <input
+                type="date"
+                className="border border-neutral-300 dark:border-neutral-600 dark:bg-neutral-800 dark:text-white px-3 py-2 rounded-lg w-full"
+                value={createForm.data.joining_date}
+                onChange={(e) => createForm.setData("joining_date", e.target.value)}
+            />
+        </div>
+
+        {/* Blood Group */}
+        {/* <div>
+            <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
+                Blood Group
+            </label>
+            <select
+                className="border border-neutral-300 dark:border-neutral-600 dark:bg-neutral-800 dark:text-white px-3 py-2 rounded-lg w-full"
+                value={createForm.data.blood_group}
+                onChange={(e) => createForm.setData("blood_group", e.target.value)}
             >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              disabled={createForm.processing}
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
+                <option value="">Select Blood Group</option>
+                {bloodGroups.map((bg) => (
+                    <option key={bg} value={bg}>
+                        {bg}
+                    </option>
+                ))}
+            </select>
+        </div> */}
+
+        {/* -------------------------- SALARY SECTION -------------------------- */}
+        <div className="sm:col-span-2 lg:col-span-full mt-4">
+            <h3 className="text-lg font-semibold text-blue-600 dark:text-blue-400 mb-2">
+                Salary Information
+            </h3>
+        </div>
+
+        {/* Salary Type */}
+        <div>
+            <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
+                Salary Type
+            </label>
+            <select
+                className="border border-neutral-300 dark:border-neutral-600 dark:bg-neutral-800 dark:text-white px-3 py-2 rounded-lg w-full"
+                value={createForm.data.salary_type ?? ""}
+                onChange={(e) => createForm.setData("salary_type", e.target.value)}
             >
-              {createForm.processing ? "Creating..." : "Create User"}
+                <option value="">Select</option>
+                <option value="monthly">Monthly Salary</option>
+                <option value="daily">Daily Wage</option>
+                <option value="hourly">Hourly Wage</option>
+            </select>
+        </div>
+
+        {/* Monthly Salary */}
+        {createForm.data.salary_type === "monthly" && (
+            <div>
+                <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
+                    Monthly Salary
+                </label>
+                <input
+                    type="number"
+                    className="border border-neutral-300 dark:border-neutral-600 dark:bg-neutral-800 dark:text-white px-3 py-2 rounded-lg w-full"
+                    value={createForm.data.base_salary}
+                    onChange={(e) => createForm.setData("base_salary", e.target.value)}
+                />
+            </div>
+        )}
+
+        {/* Daily Wage */}
+        {createForm.data.salary_type === "daily" && (
+            <div>
+                <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
+                    Per Day Rate
+                </label>
+                <input
+                    type="number"
+                    className="border border-neutral-300 dark:border-neutral-600 dark:bg-neutral-800 dark:text-white px-3 py-2 rounded-lg w-full"
+                    value={createForm.data.per_day_rate}
+                    onChange={(e) => createForm.setData("per_day_rate", e.target.value)}
+                />
+            </div>
+        )}
+
+        {/* Hourly Wage */}
+        {createForm.data.salary_type === "hourly" && (
+            <>
+                <div>
+                    <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
+                        Per Hour Rate
+                    </label>
+                    <input
+                        type="number"
+                        className="border border-neutral-300 dark:border-neutral-600 dark:bg-neutral-800 dark:text-white px-3 py-2 rounded-lg w-full"
+                        value={createForm.data.per_hour_rate}
+                        onChange={(e) => createForm.setData("per_hour_rate", e.target.value)}
+                    />
+                </div>
+
+                <div>
+                    <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
+                        OT Rate
+                    </label>
+                    <input
+                        type="number"
+                        className="border border-neutral-300 dark:border-neutral-600 dark:bg-neutral-800 dark:text-white px-3 py-2 rounded-lg w-full"
+                        value={createForm.data.ot_rate}
+                        onChange={(e) => createForm.setData("ot_rate", e.target.value)}
+                    />
+                </div>
+            </>
+        )}
+
+        {/* -------------------------- ACTION BUTTONS -------------------------- */}
+        <div className="flex gap-2 justify-start mt-6 sm:col-span-2 lg:col-span-full">
+            <button
+                type="button"
+                onClick={() => setShowCreate(false)}
+                className="px-4 py-2 rounded-lg border border-neutral-300 dark:border-neutral-600 text-neutral-700 dark:text-neutral-300"
+            >
+                Cancel
             </button>
-          </div>
-        </form>
+
+            <button
+                type="submit"
+                disabled={createForm.processing}
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
+            >
+                {createForm.processing ? "Creating..." : "Create User"}
+            </button>
+        </div>
+    </form>
       </Modal>
+
 
       {/* ===================================================================
          EDIT MODAL (FULL USER + PROFILE)
       =================================================================== */}
-     <Modal
+<Modal
   show={showEdit}
   onClose={() => setShowEdit(false)}
   title="Edit User"
@@ -616,68 +734,47 @@ export default function Index({ auth, users, kpi }: Props) {
     onSubmit={(e) => {
       e.preventDefault();
       if (selectedUser) {
-        // Assuming editForm is an inertiajs or similar form helper
         editForm.put(`/super-admin/users/${selectedUser.id}`, {
           onSuccess: () => setShowEdit(false),
         });
       }
     }}
-    // Apply modern form grid layout with more explicit spacing
     className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-[repeat(auto-fit,minmax(250px,1fr))]"
   >
-    {/*
-      1. USER FIELDS
-      Applying a subtle grouping or just consistent, clean field styles.
-    */}
+
+    {/* -------------------------------- */}
+    {/* USER CREDENTIALS */}
+    {/* -------------------------------- */}
     <div className="lg:col-span-full">
-      <h3 className="text-lg font-semibold text-blue-600 dark:text-blue-400 mb-3 border-b border-neutral-200 dark:border-neutral-700 pb-2">
+      <h3 className="text-lg font-semibold text-blue-600 dark:text-blue-400 mb-3 border-b pb-2">
         User Credentials
       </h3>
     </div>
 
-    {/* Name Field */}
     <div>
-      <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
-        Name <span className="text-red-500">*</span>
-      </label>
+      <label className="block text-sm font-medium mb-1">Name <span className="text-red-500">*</span></label>
       <input
         type="text"
-        // Modern, slightly softer input style
-        className="border border-neutral-300 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white px-4 py-2.5 rounded-lg w-full focus:ring-blue-500 focus:border-blue-500 transition duration-150 shadow-sm"
-        placeholder="Name"
+        className="border px-4 py-2.5 rounded-lg w-full dark:bg-neutral-800"
         value={editForm.data.name}
         onChange={(e) => editForm.setData("name", e.target.value)}
       />
-      {editForm.errors.name && (
-        <p className="text-red-500 text-sm mt-1">{editForm.errors.name}</p>
-      )}
     </div>
 
-    {/* Email Field */}
     <div>
-      <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
-        Email <span className="text-red-500">*</span>
-      </label>
+      <label className="block text-sm font-medium mb-1">Email <span className="text-red-500">*</span></label>
       <input
         type="email"
-        className="border border-neutral-300 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white px-4 py-2.5 rounded-lg w-full focus:ring-blue-500 focus:border-blue-500 transition duration-150 shadow-sm"
-        placeholder="Email"
+        className="border px-4 py-2.5 rounded-lg w-full dark:bg-neutral-800"
         value={editForm.data.email}
         onChange={(e) => editForm.setData("email", e.target.value)}
       />
-      {editForm.errors.email && (
-        <p className="text-red-500 text-sm mt-1">{editForm.errors.email}</p>
-      )}
     </div>
 
-    {/* Role Field (Select) */}
     <div>
-      <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
-        Role <span className="text-red-500">*</span>
-      </label>
+      <label className="block text-sm font-medium mb-1">Role <span className="text-red-500">*</span></label>
       <select
-        // Ensure select matches input height and style
-        className="border border-neutral-300 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white px-4 py-2.5 rounded-lg w-full focus:ring-blue-500 focus:border-blue-500 transition duration-150 shadow-sm"
+        className="border px-4 py-2.5 rounded-lg w-full dark:bg-neutral-800"
         value={editForm.data.role}
         onChange={(e) => editForm.setData("role", e.target.value)}
       >
@@ -687,176 +784,221 @@ export default function Index({ auth, users, kpi }: Props) {
         <option value="accountant">Accountant</option>
         <option value="fieldstaff">Field Staff</option>
       </select>
-      {editForm.errors.role && (
-        <p className="text-red-500 text-sm mt-1">{editForm.errors.role}</p>
-      )}
     </div>
 
-    {/*
-      2. PROFILE FIELDS
-      Using a divider/heading for visual separation.
-    */}
+    {/* -------------------------------- */}
+    {/* PROFILE DETAILS */}
+    {/* -------------------------------- */}
     <div className="lg:col-span-full pt-4">
-      <h3 className="text-lg font-semibold text-blue-600 dark:text-blue-400 mb-3 border-b border-neutral-200 dark:border-neutral-700 pb-2">
+      <h3 className="text-lg font-semibold text-blue-600 dark:text-blue-400 mb-3 border-b pb-2">
         Profile Details
       </h3>
     </div>
 
-    {/* Address Field */}
     <div>
-      <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
-        Address
-      </label>
+      <label className="block text-sm font-medium mb-1">Address</label>
       <input
         type="text"
-        placeholder="Address"
-        className="border border-neutral-300 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white px-4 py-2.5 rounded-lg w-full focus:ring-blue-500 focus:border-blue-500 transition duration-150 shadow-sm"
+        className="border px-4 py-2.5 rounded-lg w-full dark:bg-neutral-800"
         value={editForm.data.address}
         onChange={(e) => editForm.setData("address", e.target.value)}
       />
     </div>
 
-    {/* Emergency Contact Field */}
     <div>
-      <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
-        Emergency Contact
-      </label>
+      <label className="block text-sm font-medium mb-1">Emergency Contact</label>
       <input
         type="text"
-        placeholder="Emergency Contact"
-        className="border border-neutral-300 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white px-4 py-2.5 rounded-lg w-full focus:ring-blue-500 focus:border-blue-500 transition duration-150 shadow-sm"
+        className="border px-4 py-2.5 rounded-lg w-full dark:bg-neutral-800"
         value={editForm.data.emergency_contact}
         onChange={(e) => editForm.setData("emergency_contact", e.target.value)}
       />
     </div>
 
-    {/* Date of Birth Field */}
     <div>
-      <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
-        Date of Birth
-      </label>
+      <label className="block text-sm font-medium mb-1">Date of Birth</label>
       <input
         type="date"
-        placeholder="DOB"
-        className="border border-neutral-300 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white px-4 py-2.5 rounded-lg w-full focus:ring-blue-500 focus:border-blue-500 transition duration-150 shadow-sm"
+        className="border px-4 py-2.5 rounded-lg w-full dark:bg-neutral-800"
         value={editForm.data.dob || ""}
         onChange={(e) => editForm.setData("dob", e.target.value)}
       />
     </div>
 
-    {/* Bank Account No Field */}
     <div>
-      <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
-        Bank Account No
-      </label>
+      <label className="block text-sm font-medium mb-1">Bank Account No</label>
       <input
         type="text"
-        placeholder="Bank Account No"
-        className="border border-neutral-300 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white px-4 py-2.5 rounded-lg w-full focus:ring-blue-500 focus:border-blue-500 transition duration-150 shadow-sm"
+        className="border px-4 py-2.5 rounded-lg w-full dark:bg-neutral-800"
         value={editForm.data.bank_account_no}
         onChange={(e) => editForm.setData("bank_account_no", e.target.value)}
       />
     </div>
 
-    {/* IFSC Code Field */}
     <div>
-      <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
-        IFSC Code
-      </label>
+      <label className="block text-sm font-medium mb-1">IFSC</label>
       <input
         type="text"
-        placeholder="IFSC"
-        className="border border-neutral-300 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white px-4 py-2.5 rounded-lg w-full focus:ring-blue-500 focus:border-blue-500 transition duration-150 shadow-sm"
+        className="border px-4 py-2.5 rounded-lg w-full dark:bg-neutral-800"
         value={editForm.data.ifsc}
         onChange={(e) => editForm.setData("ifsc", e.target.value)}
       />
     </div>
 
-    {/* PAN No Field */}
     <div>
-      <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
-        PAN No
-      </label>
+      <label className="block text-sm font-medium mb-1">PAN No</label>
       <input
         type="text"
-        placeholder="PAN No"
-        className="border border-neutral-300 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white px-4 py-2.5 rounded-lg w-full focus:ring-blue-500 focus:border-blue-500 transition duration-150 shadow-sm"
+        className="border px-4 py-2.5 rounded-lg w-full dark:bg-neutral-800"
         value={editForm.data.pan_no}
         onChange={(e) => editForm.setData("pan_no", e.target.value)}
       />
     </div>
 
-    {/* Aadhaar No Field */}
     <div>
-      <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
-        Aadhaar No
-      </label>
+      <label className="block text-sm font-medium mb-1">Aadhaar No</label>
       <input
         type="text"
-        placeholder="Aadhaar No"
-        className="border border-neutral-300 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white px-4 py-2.5 rounded-lg w-full focus:ring-blue-500 focus:border-blue-500 transition duration-150 shadow-sm"
+        className="border px-4 py-2.5 rounded-lg w-full dark:bg-neutral-800"
         value={editForm.data.aadhaar_no}
         onChange={(e) => editForm.setData("aadhaar_no", e.target.value)}
       />
     </div>
 
-    {/* Joining Date Field */}
     <div>
-      <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
-        Joining Date
-      </label>
+      <label className="block text-sm font-medium mb-1">Joining Date</label>
       <input
         type="date"
-        placeholder="Joining Date"
-        className="border border-neutral-300 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white px-4 py-2.5 rounded-lg w-full focus:ring-blue-500 focus:border-blue-500 transition duration-150 shadow-sm"
+        className="border px-4 py-2.5 rounded-lg w-full dark:bg-neutral-800"
         value={editForm.data.joining_date || ""}
         onChange={(e) => editForm.setData("joining_date", e.target.value)}
       />
     </div>
 
-    {/* Blood Group Field (Select) */}
     <div>
-      <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
-        Blood Group
-      </label>
+      <label className="block text-sm font-medium mb-1">Blood Group</label>
       <select
-        className="border border-neutral-300 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white px-4 py-2.5 rounded-lg w-full focus:ring-blue-500 focus:border-blue-500 transition duration-150 shadow-sm"
+        className="border px-4 py-2.5 rounded-lg w-full dark:bg-neutral-800"
         value={editForm.data.blood_group}
         onChange={(e) => editForm.setData("blood_group", e.target.value)}
       >
-        <option value="">Select Blood Group</option>
-        {/* Assuming bloodGroups is an array of strings */}
-        {bloodGroups.map((bg) => (
+        <option value="">Select</option>
+        {bloodGroups.map(bg => (
           <option key={bg} value={bg}>{bg}</option>
         ))}
       </select>
     </div>
 
-    {/*
-      3. ACTION BUTTONS
-      Using lg:col-span-full to make buttons take the full width below the grid
-    */}
-    <div className="lg:col-span-full flex gap-3 justify-end mt-4 pt-4 border-t border-neutral-200 dark:border-neutral-700">
-      {/* Cancel Button - Subtle secondary style */}
+    {/* -------------------------------- */}
+    {/* REPORTING STRUCTURE */}
+    {/* -------------------------------- */}
+    <div className="lg:col-span-full pt-4">
+      <h3 className="text-lg font-semibold text-blue-600 dark:text-blue-400 mb-3 border-b pb-2">
+        Reporting Structure
+      </h3>
+    </div>
+
+    <div>
+      <label className="block text-sm font-medium mb-1">Reports To</label>
+      <select
+        className="border px-4 py-2.5 rounded-lg w-full dark:bg-neutral-800"
+        value={editForm.data.reports_to || ""}
+        onChange={(e) => editForm.setData("reports_to", e.target.value)}
+      >
+        <option value="">None</option>
+        {users.map((u) => (
+          <option key={u.id} value={u.id}>
+            {u.name} ({u.role})
+          </option>
+        ))}
+      </select>
+    </div>
+
+    {/* -------------------------------- */}
+    {/* SALARY DETAILS */}
+    {/* -------------------------------- */}
+    <div className="lg:col-span-full pt-4">
+      <h3 className="text-lg font-semibold text-blue-600 dark:text-blue-400 mb-3 border-b pb-2">
+        Salary Details
+      </h3>
+    </div>
+
+    <div>
+      <label className="block text-sm font-medium mb-1">Salary Type</label>
+      <select
+        className="border px-4 py-2.5 rounded-lg w-full dark:bg-neutral-800"
+        value={editForm.data.salary_type || ""}
+        onChange={(e) => editForm.setData("salary_type", e.target.value)}
+      >
+        <option value="">Select Type</option>
+        <option value="monthly">Fixed Monthly</option>
+        <option value="daily">Per Day</option>
+        <option value="hourly">Hourly</option>
+      </select>
+    </div>
+
+    <div>
+      <label className="block text-sm font-medium mb-1">Base Salary / Monthly</label>
+      <input
+        type="number"
+        className="border px-4 py-2.5 rounded-lg w-full dark:bg-neutral-800"
+        value={editForm.data.base_salary || ""}
+        onChange={(e) => editForm.setData("base_salary", e.target.value)}
+      />
+    </div>
+
+    <div>
+      <label className="block text-sm font-medium mb-1">Per Day Rate</label>
+      <input
+        type="number"
+        className="border px-4 py-2.5 rounded-lg w-full dark:bg-neutral-800"
+        value={editForm.data.per_day_rate || ""}
+        onChange={(e) => editForm.setData("per_day_rate", e.target.value)}
+      />
+    </div>
+
+    <div>
+      <label className="block text-sm font-medium mb-1">Per Hour Rate</label>
+      <input
+        type="number"
+        className="border px-4 py-2.5 rounded-lg w-full dark:bg-neutral-800"
+        value={editForm.data.per_hour_rate || ""}
+        onChange={(e) => editForm.setData("per_hour_rate", e.target.value)}
+      />
+    </div>
+
+    <div>
+      <label className="block text-sm font-medium mb-1">OT Rate</label>
+      <input
+        type="number"
+        className="border px-4 py-2.5 rounded-lg w-full dark:bg-neutral-800"
+        value={editForm.data.ot_rate || ""}
+        onChange={(e) => editForm.setData("ot_rate", e.target.value)}
+      />
+    </div>
+
+    {/* BUTTONS */}
+    <div className="lg:col-span-full flex justify-end gap-3 mt-6 border-t pt-4">
       <button
         type="button"
         onClick={() => setShowEdit(false)}
-        className="px-6 py-2.5 rounded-lg text-neutral-600 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-700 transition duration-150"
+        className="px-6 py-2.5 rounded-lg bg-neutral-200 dark:bg-neutral-700"
       >
         Cancel
       </button>
 
-      {/* Update Button - Primary, professional look */}
       <button
         type="submit"
         disabled={editForm.processing}
-        className="px-6 py-2.5 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 disabled:opacity-50 disabled:cursor-not-allowed transition duration-150"
+        className="px-6 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
       >
         {editForm.processing ? "Saving..." : "Update User"}
       </button>
     </div>
+
   </form>
 </Modal>
+
       {/* ===================================================================
          UPLOAD DOCUMENTS MODAL
       =================================================================== */}

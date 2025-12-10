@@ -9,6 +9,7 @@ use App\Models\UserDocument;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Illuminate\Validation\Rule;
 
@@ -74,6 +75,12 @@ class UserManagementController extends Controller
                 'password' => Hash::make($validated['password']),
                 'role' => $validated['role'],
                 'is_first_login' => true,
+                'reports_to' => $request->reports_to,
+                'salary_type' => $request->salary_type,
+                'base_salary' => $request->base_salary,
+                'per_day_rate' => $request->per_day_rate,
+                'per_hour_rate' => $request->per_hour_rate,
+                'ot_rate' => $request->ot_rate,
             ]);
 
             $user->profile()->create([
@@ -139,6 +146,12 @@ class UserManagementController extends Controller
                 'name' => $validated['name'],
                 'email' => $validated['email'],
                 'role' => $validated['role'],
+                'reports_to' => $request->reports_to,
+                'salary_type' => $request->salary_type,
+                'base_salary' => $request->base_salary,
+                'per_day_rate' => $request->per_day_rate,
+                'per_hour_rate' => $request->per_hour_rate,
+                'ot_rate' => $request->ot_rate,
             ]);
 
             $user->profile()->updateOrCreate(
@@ -184,31 +197,13 @@ class UserManagementController extends Controller
         return back()->with('success', 'User deleted successfully');
     }
 
-//     public function uploadDocuments(Request $request, User $user)
-// {
-//     $request->validate([
-//         'documents' => 'required|array',
-//         'documents.*' => 'file|max:2048'
-//     ]);
-
-//     foreach ($request->file('documents') as $file) {
-//         $path = $file->store('user_documents', 'public');
-
-//         $user->documents()->create([
-//             'doc_type' => 'general',
-//             'file_path' => $path,
-//             'status' => 'pending',
-//         ]);
-//     }
-
-//     return back()->with('success', 'Documents uploaded successfully');
-// }
-
 public function uploadDocuments(Request $request, User $user)
 {
     $validated = $request->validate([
         'documents' => 'required|array',
-        'documents.*' => 'file|max:2048'
+        'documents.*' => 'file|max:2048',
+        'doc_type' => 'required|string',
+        'expiry_date' => 'nullable|date',
     ]);
 
     foreach ($request->file('documents') as $file) {
@@ -216,9 +211,9 @@ public function uploadDocuments(Request $request, User $user)
         $path = $file->store('user_documents', 'public');
 
         $user->documents()->create([
-            'doc_type' => 'general',   // default since frontend does not send it
+            'doc_type' => $validated['doc_type'],             
             'file_path' => $path,
-            'expiry_date' => null,
+            'expiry_date' => $validated['expiry_date'],        
             'status' => 'pending',
             'verified_by' => null,
         ]);
@@ -226,6 +221,7 @@ public function uploadDocuments(Request $request, User $user)
 
     return back()->with('success', 'Documents uploaded successfully.');
 }
+
 
 public function verifyDocument(Request $request, User $user, UserDocument $doc)
 {
@@ -244,6 +240,22 @@ public function verifyDocument(Request $request, User $user, UserDocument $doc)
 }
 
 
+public function removeDocument(User $user, UserDocument $doc)
+{
+    if ($doc->user_id !== $user->id) {
+        return back()->with('error', 'Invalid document.');
+    }
+
+    // Delete file from storage
+    if ($doc->file_path && Storage::disk('public')->exists($doc->file_path)) {
+        Storage::disk('public')->delete($doc->file_path);
+    }
+
+    // Remove DB record
+    $doc->delete();
+
+    return back()->with('success', 'Document removed successfully.');
+}
 
 
 }

@@ -3,7 +3,7 @@ import documents from './documents'
 import face from './face'
 /**
 * @see \App\Http\Controllers\SuperAdmin\UserManagementController::index
- * @see app/Http/Controllers/SuperAdmin/UserManagementController.php:20
+ * @see app/Http/Controllers/SuperAdmin/UserManagementController.php:21
  * @route '/super-admin/users'
  */
 export const index = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -18,7 +18,7 @@ index.definition = {
 
 /**
 * @see \App\Http\Controllers\SuperAdmin\UserManagementController::index
- * @see app/Http/Controllers/SuperAdmin/UserManagementController.php:20
+ * @see app/Http/Controllers/SuperAdmin/UserManagementController.php:21
  * @route '/super-admin/users'
  */
 index.url = (options?: RouteQueryOptions) => {
@@ -27,7 +27,7 @@ index.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\SuperAdmin\UserManagementController::index
- * @see app/Http/Controllers/SuperAdmin/UserManagementController.php:20
+ * @see app/Http/Controllers/SuperAdmin/UserManagementController.php:21
  * @route '/super-admin/users'
  */
 index.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -36,7 +36,7 @@ index.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 })
 /**
 * @see \App\Http\Controllers\SuperAdmin\UserManagementController::index
- * @see app/Http/Controllers/SuperAdmin/UserManagementController.php:20
+ * @see app/Http/Controllers/SuperAdmin/UserManagementController.php:21
  * @route '/super-admin/users'
  */
 index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -46,7 +46,7 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
     /**
 * @see \App\Http\Controllers\SuperAdmin\UserManagementController::index
- * @see app/Http/Controllers/SuperAdmin/UserManagementController.php:20
+ * @see app/Http/Controllers/SuperAdmin/UserManagementController.php:21
  * @route '/super-admin/users'
  */
     const indexForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -56,7 +56,7 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
             /**
 * @see \App\Http\Controllers\SuperAdmin\UserManagementController::index
- * @see app/Http/Controllers/SuperAdmin/UserManagementController.php:20
+ * @see app/Http/Controllers/SuperAdmin/UserManagementController.php:21
  * @route '/super-admin/users'
  */
         indexForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -65,7 +65,7 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
         })
             /**
 * @see \App\Http\Controllers\SuperAdmin\UserManagementController::index
- * @see app/Http/Controllers/SuperAdmin/UserManagementController.php:20
+ * @see app/Http/Controllers/SuperAdmin/UserManagementController.php:21
  * @route '/super-admin/users'
  */
         indexForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -159,7 +159,7 @@ create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     create.form = createForm
 /**
 * @see \App\Http\Controllers\SuperAdmin\UserManagementController::store
- * @see app/Http/Controllers/SuperAdmin/UserManagementController.php:45
+ * @see app/Http/Controllers/SuperAdmin/UserManagementController.php:46
  * @route '/super-admin/users'
  */
 export const store = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -174,7 +174,7 @@ store.definition = {
 
 /**
 * @see \App\Http\Controllers\SuperAdmin\UserManagementController::store
- * @see app/Http/Controllers/SuperAdmin/UserManagementController.php:45
+ * @see app/Http/Controllers/SuperAdmin/UserManagementController.php:46
  * @route '/super-admin/users'
  */
 store.url = (options?: RouteQueryOptions) => {
@@ -183,7 +183,7 @@ store.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\SuperAdmin\UserManagementController::store
- * @see app/Http/Controllers/SuperAdmin/UserManagementController.php:45
+ * @see app/Http/Controllers/SuperAdmin/UserManagementController.php:46
  * @route '/super-admin/users'
  */
 store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -193,7 +193,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
     /**
 * @see \App\Http\Controllers\SuperAdmin\UserManagementController::store
- * @see app/Http/Controllers/SuperAdmin/UserManagementController.php:45
+ * @see app/Http/Controllers/SuperAdmin/UserManagementController.php:46
  * @route '/super-admin/users'
  */
     const storeForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -203,7 +203,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
             /**
 * @see \App\Http\Controllers\SuperAdmin\UserManagementController::store
- * @see app/Http/Controllers/SuperAdmin/UserManagementController.php:45
+ * @see app/Http/Controllers/SuperAdmin/UserManagementController.php:46
  * @route '/super-admin/users'
  */
         storeForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -408,10 +408,10 @@ edit.head = (args: { user: string | number } | [user: string | number ] | string
     edit.form = editForm
 /**
 * @see \App\Http\Controllers\SuperAdmin\UserManagementController::update
- * @see app/Http/Controllers/SuperAdmin/UserManagementController.php:110
+ * @see app/Http/Controllers/SuperAdmin/UserManagementController.php:117
  * @route '/super-admin/users/{user}'
  */
-export const update = (args: { user: number | { id: number } } | [user: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
+export const update = (args: { user: string | number | { id: string | number } } | [user: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
     url: update.url(args, options),
     method: 'put',
 })
@@ -423,10 +423,10 @@ update.definition = {
 
 /**
 * @see \App\Http\Controllers\SuperAdmin\UserManagementController::update
- * @see app/Http/Controllers/SuperAdmin/UserManagementController.php:110
+ * @see app/Http/Controllers/SuperAdmin/UserManagementController.php:117
  * @route '/super-admin/users/{user}'
  */
-update.url = (args: { user: number | { id: number } } | [user: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
+update.url = (args: { user: string | number | { id: string | number } } | [user: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { user: args }
     }
@@ -456,29 +456,29 @@ update.url = (args: { user: number | { id: number } } | [user: number | { id: nu
 
 /**
 * @see \App\Http\Controllers\SuperAdmin\UserManagementController::update
- * @see app/Http/Controllers/SuperAdmin/UserManagementController.php:110
+ * @see app/Http/Controllers/SuperAdmin/UserManagementController.php:117
  * @route '/super-admin/users/{user}'
  */
-update.put = (args: { user: number | { id: number } } | [user: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
+update.put = (args: { user: string | number | { id: string | number } } | [user: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
     url: update.url(args, options),
     method: 'put',
 })
 /**
 * @see \App\Http\Controllers\SuperAdmin\UserManagementController::update
- * @see app/Http/Controllers/SuperAdmin/UserManagementController.php:110
+ * @see app/Http/Controllers/SuperAdmin/UserManagementController.php:117
  * @route '/super-admin/users/{user}'
  */
-update.patch = (args: { user: number | { id: number } } | [user: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
+update.patch = (args: { user: string | number | { id: string | number } } | [user: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
     url: update.url(args, options),
     method: 'patch',
 })
 
     /**
 * @see \App\Http\Controllers\SuperAdmin\UserManagementController::update
- * @see app/Http/Controllers/SuperAdmin/UserManagementController.php:110
+ * @see app/Http/Controllers/SuperAdmin/UserManagementController.php:117
  * @route '/super-admin/users/{user}'
  */
-    const updateForm = (args: { user: number | { id: number } } | [user: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    const updateForm = (args: { user: string | number | { id: string | number } } | [user: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: update.url(args, {
                     [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                         _method: 'PUT',
@@ -490,10 +490,10 @@ update.patch = (args: { user: number | { id: number } } | [user: number | { id: 
 
             /**
 * @see \App\Http\Controllers\SuperAdmin\UserManagementController::update
- * @see app/Http/Controllers/SuperAdmin/UserManagementController.php:110
+ * @see app/Http/Controllers/SuperAdmin/UserManagementController.php:117
  * @route '/super-admin/users/{user}'
  */
-        updateForm.put = (args: { user: number | { id: number } } | [user: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        updateForm.put = (args: { user: string | number | { id: string | number } } | [user: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: update.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'PUT',
@@ -504,10 +504,10 @@ update.patch = (args: { user: number | { id: number } } | [user: number | { id: 
         })
             /**
 * @see \App\Http\Controllers\SuperAdmin\UserManagementController::update
- * @see app/Http/Controllers/SuperAdmin/UserManagementController.php:110
+ * @see app/Http/Controllers/SuperAdmin/UserManagementController.php:117
  * @route '/super-admin/users/{user}'
  */
-        updateForm.patch = (args: { user: number | { id: number } } | [user: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        updateForm.patch = (args: { user: string | number | { id: string | number } } | [user: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: update.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'PATCH',
@@ -520,10 +520,10 @@ update.patch = (args: { user: number | { id: number } } | [user: number | { id: 
     update.form = updateForm
 /**
 * @see \App\Http\Controllers\SuperAdmin\UserManagementController::destroy
- * @see app/Http/Controllers/SuperAdmin/UserManagementController.php:178
+ * @see app/Http/Controllers/SuperAdmin/UserManagementController.php:191
  * @route '/super-admin/users/{user}'
  */
-export const destroy = (args: { user: number | { id: number } } | [user: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
+export const destroy = (args: { user: string | number | { id: string | number } } | [user: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
     url: destroy.url(args, options),
     method: 'delete',
 })
@@ -535,10 +535,10 @@ destroy.definition = {
 
 /**
 * @see \App\Http\Controllers\SuperAdmin\UserManagementController::destroy
- * @see app/Http/Controllers/SuperAdmin/UserManagementController.php:178
+ * @see app/Http/Controllers/SuperAdmin/UserManagementController.php:191
  * @route '/super-admin/users/{user}'
  */
-destroy.url = (args: { user: number | { id: number } } | [user: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
+destroy.url = (args: { user: string | number | { id: string | number } } | [user: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { user: args }
     }
@@ -568,20 +568,20 @@ destroy.url = (args: { user: number | { id: number } } | [user: number | { id: n
 
 /**
 * @see \App\Http\Controllers\SuperAdmin\UserManagementController::destroy
- * @see app/Http/Controllers/SuperAdmin/UserManagementController.php:178
+ * @see app/Http/Controllers/SuperAdmin/UserManagementController.php:191
  * @route '/super-admin/users/{user}'
  */
-destroy.delete = (args: { user: number | { id: number } } | [user: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
+destroy.delete = (args: { user: string | number | { id: string | number } } | [user: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
     url: destroy.url(args, options),
     method: 'delete',
 })
 
     /**
 * @see \App\Http\Controllers\SuperAdmin\UserManagementController::destroy
- * @see app/Http/Controllers/SuperAdmin/UserManagementController.php:178
+ * @see app/Http/Controllers/SuperAdmin/UserManagementController.php:191
  * @route '/super-admin/users/{user}'
  */
-    const destroyForm = (args: { user: number | { id: number } } | [user: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    const destroyForm = (args: { user: string | number | { id: string | number } } | [user: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: destroy.url(args, {
                     [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                         _method: 'DELETE',
@@ -593,10 +593,10 @@ destroy.delete = (args: { user: number | { id: number } } | [user: number | { id
 
             /**
 * @see \App\Http\Controllers\SuperAdmin\UserManagementController::destroy
- * @see app/Http/Controllers/SuperAdmin/UserManagementController.php:178
+ * @see app/Http/Controllers/SuperAdmin/UserManagementController.php:191
  * @route '/super-admin/users/{user}'
  */
-        destroyForm.delete = (args: { user: number | { id: number } } | [user: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        destroyForm.delete = (args: { user: string | number | { id: string | number } } | [user: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: destroy.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'DELETE',

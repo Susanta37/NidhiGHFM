@@ -221,7 +221,7 @@ update.put = (args: { record: string | number } | [record: string | number ] | s
  * @see app/Http/Controllers/SuperAdmin/ComplianceController.php:65
  * @route '/super-admin/compliance/{record}'
  */
-export const deleteMethod = (args: { record: number | { id: number } } | [record: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
+export const deleteMethod = (args: { record: string | number | { id: string | number } } | [record: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
     url: deleteMethod.url(args, options),
     method: 'delete',
 })
@@ -236,7 +236,7 @@ deleteMethod.definition = {
  * @see app/Http/Controllers/SuperAdmin/ComplianceController.php:65
  * @route '/super-admin/compliance/{record}'
  */
-deleteMethod.url = (args: { record: number | { id: number } } | [record: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
+deleteMethod.url = (args: { record: string | number | { id: string | number } } | [record: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { record: args }
     }
@@ -269,7 +269,7 @@ deleteMethod.url = (args: { record: number | { id: number } } | [record: number 
  * @see app/Http/Controllers/SuperAdmin/ComplianceController.php:65
  * @route '/super-admin/compliance/{record}'
  */
-deleteMethod.delete = (args: { record: number | { id: number } } | [record: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
+deleteMethod.delete = (args: { record: string | number | { id: string | number } } | [record: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
     url: deleteMethod.url(args, options),
     method: 'delete',
 })
@@ -279,7 +279,7 @@ deleteMethod.delete = (args: { record: number | { id: number } } | [record: numb
  * @see app/Http/Controllers/SuperAdmin/ComplianceController.php:65
  * @route '/super-admin/compliance/{record}'
  */
-    const deleteMethodForm = (args: { record: number | { id: number } } | [record: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    const deleteMethodForm = (args: { record: string | number | { id: string | number } } | [record: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: deleteMethod.url(args, {
                     [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                         _method: 'DELETE',
@@ -294,7 +294,7 @@ deleteMethod.delete = (args: { record: number | { id: number } } | [record: numb
  * @see app/Http/Controllers/SuperAdmin/ComplianceController.php:65
  * @route '/super-admin/compliance/{record}'
  */
-        deleteMethodForm.delete = (args: { record: number | { id: number } } | [record: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        deleteMethodForm.delete = (args: { record: string | number | { id: string | number } } | [record: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: deleteMethod.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'DELETE',

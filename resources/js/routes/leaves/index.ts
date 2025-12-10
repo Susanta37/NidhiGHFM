@@ -82,7 +82,7 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
  * @see app/Http/Controllers/SuperAdmin/LeaveController.php:26
  * @route '/super-admin/leaves/{leave}/approve'
  */
-export const approve = (args: { leave: number | { id: number } } | [leave: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+export const approve = (args: { leave: string | number | { id: string | number } } | [leave: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: approve.url(args, options),
     method: 'post',
 })
@@ -97,7 +97,7 @@ approve.definition = {
  * @see app/Http/Controllers/SuperAdmin/LeaveController.php:26
  * @route '/super-admin/leaves/{leave}/approve'
  */
-approve.url = (args: { leave: number | { id: number } } | [leave: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
+approve.url = (args: { leave: string | number | { id: string | number } } | [leave: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { leave: args }
     }
@@ -130,7 +130,7 @@ approve.url = (args: { leave: number | { id: number } } | [leave: number | { id:
  * @see app/Http/Controllers/SuperAdmin/LeaveController.php:26
  * @route '/super-admin/leaves/{leave}/approve'
  */
-approve.post = (args: { leave: number | { id: number } } | [leave: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+approve.post = (args: { leave: string | number | { id: string | number } } | [leave: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: approve.url(args, options),
     method: 'post',
 })
@@ -140,7 +140,7 @@ approve.post = (args: { leave: number | { id: number } } | [leave: number | { id
  * @see app/Http/Controllers/SuperAdmin/LeaveController.php:26
  * @route '/super-admin/leaves/{leave}/approve'
  */
-    const approveForm = (args: { leave: number | { id: number } } | [leave: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    const approveForm = (args: { leave: string | number | { id: string | number } } | [leave: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: approve.url(args, options),
         method: 'post',
     })
@@ -150,7 +150,7 @@ approve.post = (args: { leave: number | { id: number } } | [leave: number | { id
  * @see app/Http/Controllers/SuperAdmin/LeaveController.php:26
  * @route '/super-admin/leaves/{leave}/approve'
  */
-        approveForm.post = (args: { leave: number | { id: number } } | [leave: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        approveForm.post = (args: { leave: string | number | { id: string | number } } | [leave: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: approve.url(args, options),
             method: 'post',
         })
@@ -161,7 +161,7 @@ approve.post = (args: { leave: number | { id: number } } | [leave: number | { id
  * @see app/Http/Controllers/SuperAdmin/LeaveController.php:37
  * @route '/super-admin/leaves/{leave}/reject'
  */
-export const reject = (args: { leave: number | { id: number } } | [leave: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+export const reject = (args: { leave: string | number | { id: string | number } } | [leave: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: reject.url(args, options),
     method: 'post',
 })
@@ -176,7 +176,7 @@ reject.definition = {
  * @see app/Http/Controllers/SuperAdmin/LeaveController.php:37
  * @route '/super-admin/leaves/{leave}/reject'
  */
-reject.url = (args: { leave: number | { id: number } } | [leave: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
+reject.url = (args: { leave: string | number | { id: string | number } } | [leave: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { leave: args }
     }
@@ -209,7 +209,7 @@ reject.url = (args: { leave: number | { id: number } } | [leave: number | { id: 
  * @see app/Http/Controllers/SuperAdmin/LeaveController.php:37
  * @route '/super-admin/leaves/{leave}/reject'
  */
-reject.post = (args: { leave: number | { id: number } } | [leave: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+reject.post = (args: { leave: string | number | { id: string | number } } | [leave: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: reject.url(args, options),
     method: 'post',
 })
@@ -219,7 +219,7 @@ reject.post = (args: { leave: number | { id: number } } | [leave: number | { id:
  * @see app/Http/Controllers/SuperAdmin/LeaveController.php:37
  * @route '/super-admin/leaves/{leave}/reject'
  */
-    const rejectForm = (args: { leave: number | { id: number } } | [leave: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    const rejectForm = (args: { leave: string | number | { id: string | number } } | [leave: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: reject.url(args, options),
         method: 'post',
     })
@@ -229,7 +229,7 @@ reject.post = (args: { leave: number | { id: number } } | [leave: number | { id:
  * @see app/Http/Controllers/SuperAdmin/LeaveController.php:37
  * @route '/super-admin/leaves/{leave}/reject'
  */
-        rejectForm.post = (args: { leave: number | { id: number } } | [leave: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        rejectForm.post = (args: { leave: string | number | { id: string | number } } | [leave: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: reject.url(args, options),
             method: 'post',
         })
