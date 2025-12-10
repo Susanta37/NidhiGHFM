@@ -1,4 +1,6 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../wayfinder'
+import assignmentsA4dcb6 from './assignments'
+import swaps7ed2d6 from './swaps'
 /**
 * @see \App\Http\Controllers\SuperAdmin\ShiftController::index
  * @see app/Http/Controllers/SuperAdmin/ShiftController.php:14
@@ -588,7 +590,7 @@ assignments.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     assignments.form = assignmentsForm
 /**
 * @see \App\Http\Controllers\SuperAdmin\ShiftSwapController::swaps
- * @see app/Http/Controllers/SuperAdmin/ShiftSwapController.php:14
+ * @see app/Http/Controllers/SuperAdmin/ShiftSwapController.php:15
  * @route '/super-admin/shifts/swaps'
  */
 export const swaps = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -603,7 +605,7 @@ swaps.definition = {
 
 /**
 * @see \App\Http\Controllers\SuperAdmin\ShiftSwapController::swaps
- * @see app/Http/Controllers/SuperAdmin/ShiftSwapController.php:14
+ * @see app/Http/Controllers/SuperAdmin/ShiftSwapController.php:15
  * @route '/super-admin/shifts/swaps'
  */
 swaps.url = (options?: RouteQueryOptions) => {
@@ -612,7 +614,7 @@ swaps.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\SuperAdmin\ShiftSwapController::swaps
- * @see app/Http/Controllers/SuperAdmin/ShiftSwapController.php:14
+ * @see app/Http/Controllers/SuperAdmin/ShiftSwapController.php:15
  * @route '/super-admin/shifts/swaps'
  */
 swaps.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -621,7 +623,7 @@ swaps.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 })
 /**
 * @see \App\Http\Controllers\SuperAdmin\ShiftSwapController::swaps
- * @see app/Http/Controllers/SuperAdmin/ShiftSwapController.php:14
+ * @see app/Http/Controllers/SuperAdmin/ShiftSwapController.php:15
  * @route '/super-admin/shifts/swaps'
  */
 swaps.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -631,7 +633,7 @@ swaps.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
     /**
 * @see \App\Http\Controllers\SuperAdmin\ShiftSwapController::swaps
- * @see app/Http/Controllers/SuperAdmin/ShiftSwapController.php:14
+ * @see app/Http/Controllers/SuperAdmin/ShiftSwapController.php:15
  * @route '/super-admin/shifts/swaps'
  */
     const swapsForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -641,7 +643,7 @@ swaps.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
             /**
 * @see \App\Http\Controllers\SuperAdmin\ShiftSwapController::swaps
- * @see app/Http/Controllers/SuperAdmin/ShiftSwapController.php:14
+ * @see app/Http/Controllers/SuperAdmin/ShiftSwapController.php:15
  * @route '/super-admin/shifts/swaps'
  */
         swapsForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -650,7 +652,7 @@ swaps.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
         })
             /**
 * @see \App\Http\Controllers\SuperAdmin\ShiftSwapController::swaps
- * @see app/Http/Controllers/SuperAdmin/ShiftSwapController.php:14
+ * @see app/Http/Controllers/SuperAdmin/ShiftSwapController.php:15
  * @route '/super-admin/shifts/swaps'
  */
         swapsForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -671,8 +673,8 @@ store: Object.assign(store, store),
 edit: Object.assign(edit, edit),
 update: Object.assign(update, update),
 destroy: Object.assign(destroy, destroy),
-assignments: Object.assign(assignments, assignments),
-swaps: Object.assign(swaps, swaps),
+assignments: Object.assign(assignments, assignmentsA4dcb6),
+swaps: Object.assign(swaps, swaps7ed2d6),
 }
 
 export default shifts

@@ -145,16 +145,34 @@ Route::middleware(['auth', 'verified'])->group(function () {
     */
     Route::resource('/super-admin/shifts', ShiftController::class)->except(['show']);
 
-    // Assignments
-    Route::get('/super-admin/shifts/assignments', [ShiftAssignmentController::class, 'index'])->name('shifts.assignments');
-    Route::post('/super-admin/shifts/assignments', [ShiftAssignmentController::class, 'store']);
-    Route::put('/super-admin/shifts/assignments/{assignment}', [ShiftAssignmentController::class, 'update']);
-    Route::delete('/super-admin/shifts/assignments/{assignment}', [ShiftAssignmentController::class, 'destroy']);
+    // Assignments (use proper route naming)
+Route::get('/super-admin/shifts/assignments', [ShiftAssignmentController::class, 'index'])
+    ->name('shifts.assignments');
+Route::post('/super-admin/shifts/assignments', [ShiftAssignmentController::class, 'store'])
+    ->name('shifts.assignments.store');
+Route::put('/super-admin/shifts/assignments/{assignment}', [ShiftAssignmentController::class, 'update'])
+    ->name('shifts.assignments.update');
+Route::delete('/super-admin/shifts/assignments/{assignment}', [ShiftAssignmentController::class, 'destroy'])
+    ->name('shifts.assignments.destroy');
 
-    // Swap Requests
-    Route::get('/super-admin/shifts/swaps', [ShiftSwapController::class, 'index'])->name('shifts.swaps');
-    Route::post('/super-admin/shifts/swaps/{swap}/approve', [ShiftSwapController::class, 'approve']);
-    Route::post('/super-admin/shifts/swaps/{swap}/reject', [ShiftSwapController::class, 'reject']);
+
+    
+ // Swap Requests
+Route::get('/super-admin/shifts/swaps', [ShiftSwapController::class, 'index'])
+    ->name('shifts.swaps');
+
+// Load fieldstaff & show approve modal (GET)
+Route::get('/super-admin/shifts/swaps/{swap}/approve', [ShiftSwapController::class, 'approve'])
+    ->name('shifts.swaps.loadForApproval');
+
+// Assign the shift to selected fieldstaff (POST)
+Route::post('/super-admin/shifts/swaps/{swap}/assign', [ShiftSwapController::class, 'assign'])
+    ->name('shifts.swaps.assign');
+
+// Reject
+Route::post('/super-admin/shifts/swaps/{swap}/reject', [ShiftSwapController::class, 'reject'])
+    ->name('shifts.swaps.reject');
+
 
     /*
     |--------------------------------------------------------------------------
